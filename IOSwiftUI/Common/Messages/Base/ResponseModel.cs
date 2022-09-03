@@ -5,7 +5,7 @@ namespace IOSwiftUI.Common.Messages.Base;
 
 public class ResponseModel : IOResponseModel
 {
-    public ResponseModel()
+    public ResponseModel() : base()
     {
     }
 
