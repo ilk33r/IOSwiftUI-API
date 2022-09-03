@@ -1,6 +1,24 @@
-var builder = WebApplication.CreateBuilder(args);
-var app = builder.Build();
+using System;
 
-app.MapGet("/", () => "Hello World!");
+namespace IOSwiftUI.Application
+{
+    public class Program
+    {
+        private static CancellationTokenSource cancelTokenSource = new CancellationTokenSource();
 
-app.Run();
+        public static IHost BuildWebHost(string[] args) => Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder =>
+                                                                     {
+                                                                         webBuilder.UseStartup<Startup>();
+                                                                     }).Build();
+
+        public static void Main(string[] args)
+        {
+            BuildWebHost(args).RunAsync(cancelTokenSource.Token).GetAwaiter().GetResult();
+        }
+
+        public static void Shutdown()
+        {
+            cancelTokenSource.Cancel();
+        }
+    }
+}
