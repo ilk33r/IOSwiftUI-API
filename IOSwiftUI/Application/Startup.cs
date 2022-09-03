@@ -18,10 +18,6 @@ public class Startup : IOStartup
         services.AddDbContext<DatabaseContext>(opt => DatabaseContextOptions((DbContextOptionsBuilder<DatabaseContext>)opt));
     }
 
-    public override void ConfigureEndpoints(IEndpointRouteBuilder endpoints) 
-    {
-    }
-
     private void DatabaseContextOptions(DbContextOptionsBuilder<DatabaseContext> options)
     {
         string migrationAssembly = Configuration.GetValue<string>(ConfigurationConstants.MigrationsAssemblyKey);
