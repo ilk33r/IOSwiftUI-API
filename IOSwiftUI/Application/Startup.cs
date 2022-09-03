@@ -1,7 +1,9 @@
 using IOBootstrap.NET.Application;
+using IOSwiftUI.Application.Filters;
 using IOSwiftUI.Common.Constants;
 using IOSwiftUI.DataAccess.Context;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace IOSwiftUI.Application;
 
@@ -18,6 +20,11 @@ public class Startup : IOStartup
         services.AddDbContext<DatabaseContext>(opt => DatabaseContextOptions((DbContextOptionsBuilder<DatabaseContext>)opt));
     }
 
+    public override void ConfigureSwagger(SwaggerGenOptions options)
+    {
+        options.OperationFilter<DefaultHeaderFilter>();
+    }
+    
     private void DatabaseContextOptions(DbContextOptionsBuilder<DatabaseContext> options)
     {
         string migrationAssembly = Configuration.GetValue<string>(ConfigurationConstants.MigrationsAssemblyKey);
@@ -35,4 +42,5 @@ public class Startup : IOStartup
         options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(5, 0, 7)), b => b.MigrationsAssembly(migrationAssembly));
         #endif
     }
+    
 }
