@@ -38,4 +38,19 @@ public class MemberRegisterController : Controller<MemberRegisterViewModel>
         ViewModel.CheckMember(requestModel.Email);
         return new ResponseModel();
     }
+
+    [IOValidateRequestModel]
+    [IORequireHTTPS]
+    [IOUserRole(UserRoles.AnonmyMouse)]
+    [HttpPost("[action]")]
+    public ResponseModel Register([FromBody] RegisterMemberRequestModel requestModel)
+    {
+        if (!IORegexUtility.IsValidEmail(requestModel.Email))
+        {
+            throw new IOInvalidRequestException();
+        }
+        
+        ViewModel.RegisterMember(requestModel);
+        return new ResponseModel();
+    }
 }

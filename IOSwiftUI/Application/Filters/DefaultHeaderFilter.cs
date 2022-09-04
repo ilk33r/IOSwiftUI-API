@@ -1,3 +1,5 @@
+using IOBootstrap.NET.Common.Cache;
+using IOBootstrap.NET.Common.Constants;
 using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -8,6 +10,13 @@ public class DefaultHeaderFilter : IOperationFilter
 {
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
+        IOCacheObject authorizationCache = IOCache.GetCachedObject(IOCacheKeys.SwaggerAuthorization);
+        string authorization = "";
+        if (authorizationCache != null)
+        {
+            authorization = (string)authorizationCache.Value;
+        }
+
         operation.Parameters.Add(new OpenApiParameter
         {
             Name = "X-IO-AUTHORIZATION",
@@ -16,7 +25,49 @@ public class DefaultHeaderFilter : IOperationFilter
             Schema = new OpenApiSchema
             {
                 Type = "string",
-                Default = new OpenApiString("n812iw9h0ya7r0ne4qekkcslzi2dsnjc")
+                Default = new OpenApiString(authorization)
+            }
+        });
+
+        string keyID = "";
+        IOCacheObject keyIDCacheObject = IOCache.GetCachedObject(IOCacheKeys.RSAPrivateKeyIDCacheKey);
+        if (keyIDCacheObject != null) 
+        {
+            keyID = (string)keyIDCacheObject.Value;
+        }
+        operation.Parameters.Add(new OpenApiParameter
+        {
+            Name = "X-KEY-ID",
+            In = ParameterLocation.Header,
+            Required = false,
+            Schema = new OpenApiSchema
+            {
+                Type = "string",
+                Default = new OpenApiString(keyID)
+            }
+        });
+
+        operation.Parameters.Add(new OpenApiParameter
+        {
+            Name = "X-SYMMETRIC-KEY",
+            In = ParameterLocation.Header,
+            Required = false,
+            Schema = new OpenApiSchema
+            {
+                Type = "string",
+                Default = new OpenApiString("")
+            }
+        });
+
+        operation.Parameters.Add(new OpenApiParameter
+        {
+            Name = "X-SYMMETRIC-IV",
+            In = ParameterLocation.Header,
+            Required = false,
+            Schema = new OpenApiSchema
+            {
+                Type = "string",
+                Default = new OpenApiString("")
             }
         });
     }

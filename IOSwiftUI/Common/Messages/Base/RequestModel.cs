@@ -5,5 +5,4 @@ namespace IOSwiftUI.Common.Messages.Base;
 
 public class RequestModel : IORequestModel
 {
-    public string MemberToken { get; set; }
 }

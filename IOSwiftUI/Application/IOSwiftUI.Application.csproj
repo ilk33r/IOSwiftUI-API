@@ -35,6 +35,7 @@
    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
   </PropertyGroup>
 
+  <!--
   <ItemGroup> 
     <Content Include="Certificates\**" LinkBase="Certificates">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
@@ -42,5 +43,5 @@
     <None Include="Webjobs\**" LinkBase="Webjobs" />
     <None Include="Backoffice.UI\**" LinkBase="Backoffice.UI" />
   </ItemGroup>
-
+  -->
 </Project>
