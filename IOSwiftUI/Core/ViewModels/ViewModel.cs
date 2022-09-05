@@ -39,14 +39,17 @@ public class ViewModel : IOViewModel
             return (int)UserRoles.AnonmyMouse;
         }
 
-        IOCacheObject cachedObject = IOCache.GetCachedObject(CacheKeys.UserCacheKey);
+        string[] tokenParts = token.Split("-");
+        string userIdString = tokenParts[tokenParts.Length - 1];
+        int userId = int.Parse(userIdString);
+        List<string> tokenPartsList = new List<string>(tokenParts);
+        string userToken = String.Join('-', tokenPartsList.Take(tokenPartsList.Count - 1));
+
+        string cacheKey = String.Format(CacheKeys.UserCacheKey, userIdString);
+        IOCacheObject cachedObject = IOCache.GetCachedObject(cacheKey);
         if (cachedObject == null)
         {
-            string[] tokenParts = token.Split("-");
-            string userIdString = tokenParts[tokenParts.Length - 1];
-            int userId = int.Parse(userIdString);
-            List<string> tokenPartsList = new List<string>(tokenParts);
-            string userToken = String.Join('-', tokenPartsList.Take(tokenPartsList.Count - 1));
+            
 
             CurrentMember = DBContext.Members
                                         .Select(m => new MemberModel()
@@ -67,19 +70,24 @@ public class ViewModel : IOViewModel
                                         .Where(m => m.ID == userId)
                                         .FirstOrDefault();
 
-            if (CurrentMember == null || CurrentMember.UserStatus != UserStatuses.Active)
+            if (CurrentMember == null || CurrentMember.UserStatus != UserStatuses.Active || !(CurrentMember.UserToken.Equals(userToken)))
             {
                 return (int)UserRoles.AnonmyMouse;
             }
             else
             {
-                cachedObject = new IOCacheObject(CacheKeys.UserCacheKey, CurrentMember, 60);
+                cachedObject = new IOCacheObject(cacheKey, CurrentMember, 60);
                 IOCache.CacheObject(cachedObject);
                 return (int)UserRoles.User;
             }
         }
 
         CurrentMember = (MemberModel)cachedObject.Value;
-        return (int)UserRoles.User;
+        if (CurrentMember.UserToken.Equals(userToken))
+        {
+            return (int)UserRoles.User;
+        }
+
+        return (int)UserRoles.AnonmyMouse;
     }
 }

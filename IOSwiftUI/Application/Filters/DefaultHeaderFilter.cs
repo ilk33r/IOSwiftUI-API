@@ -70,5 +70,17 @@ public class DefaultHeaderFilter : IOperationFilter
                 Default = new OpenApiString("")
             }
         });
+
+        operation.Parameters.Add(new OpenApiParameter
+        {
+            Name = "X-IO-AUTHORIZATION-TOKEN",
+            In = ParameterLocation.Header,
+            Required = false,
+            Schema = new OpenApiSchema
+            {
+                Type = "string",
+                Default = new OpenApiString("")
+            }
+        });
     }
 }

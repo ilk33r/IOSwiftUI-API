@@ -3,6 +3,7 @@ using IOBootstrap.NET.Common.Enumerations;
 using IOBootstrap.NET.Common.Exceptions.Common;
 using IOBootstrap.NET.Common.Logger;
 using IOBootstrap.NET.Common.Utilities;
+using IOSwiftUI.Common.Messages.Base;
 using IOSwiftUI.Common.Messages.Members;
 using IOSwiftUI.Core.Controllers;
 using IOSwiftUI.DataAccess.Context;
@@ -35,5 +36,13 @@ public class MemberLoginController : Controller<MemberLoginViewModel>
         }
         
         return ViewModel.Authenticate(requestModel);
+    }
+
+    [IORequireHTTPS]
+    [IOUserRole(UserRoles.User)]
+    [HttpGet("[action]")]
+    public ResponseModel CheckToken()
+    {
+        return new ResponseModel();
     }
 }
