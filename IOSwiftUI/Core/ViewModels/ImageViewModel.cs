@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using IOBootstrap.NET.Common.Constants;
 using IOBootstrap.NET.Common.Utilities;
 using IOSwiftUI.Common.Constants;
 using IOSwiftUI.Common.Exceptions;
@@ -86,22 +85,6 @@ public class ImageViewModel : ViewModel
                 throw new ImageNotFoundException();
             }
         }
-    }
-
-    public string CreatePublicId(string fileName)
-    {
-		byte[] key = Convert.FromBase64String(Configuration.GetValue<string>(IOConfigurationConstants.EncryptionKey));
-		byte[] iv = Convert.FromBase64String(Configuration.GetValue<string>(IOConfigurationConstants.EncryptionIV));
-        IOAESUtilities aesUtilities = new IOAESUtilities(key, iv);
-        return aesUtilities.Encrypt(fileName);
-    }
-
-    public string GetFileName(string publicId)
-    {
-		byte[] key = Convert.FromBase64String(Configuration.GetValue<string>(IOConfigurationConstants.EncryptionKey));
-		byte[] iv = Convert.FromBase64String(Configuration.GetValue<string>(IOConfigurationConstants.EncryptionIV));
-        IOAESUtilities aesUtilities = new IOAESUtilities(key, iv);
-        return aesUtilities.Decrypt(publicId);
     }
 
     private byte[] ResizedAndEncodeImage(Image image)

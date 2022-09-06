@@ -4,11 +4,13 @@ using System.Linq;
 using IOBootstrap.NET.Common.Cache;
 using IOBootstrap.NET.Common.Constants;
 using IOBootstrap.NET.Common.Enumerations;
+using IOBootstrap.NET.Common.Utilities;
 using IOBootstrap.NET.Core.ViewModels;
 using IOSwiftUI.Common.Constants;
 using IOSwiftUI.Common.Enumerations;
 using IOSwiftUI.Common.Models;
 using IOSwiftUI.DataAccess.Context;
+using Microsoft.Extensions.Configuration;
 
 namespace IOSwiftUI.Core.ViewModels;
 
@@ -89,5 +91,21 @@ public class ViewModel : IOViewModel
         }
 
         return (int)UserRoles.AnonmyMouse;
+    }
+
+    public string CreatePublicId(string fileName)
+    {
+		byte[] key = Convert.FromBase64String(Configuration.GetValue<string>(IOConfigurationConstants.EncryptionKey));
+		byte[] iv = Convert.FromBase64String(Configuration.GetValue<string>(IOConfigurationConstants.EncryptionIV));
+        IOAESUtilities aesUtilities = new IOAESUtilities(key, iv);
+        return aesUtilities.Encrypt(fileName);
+    }
+
+    public string GetFileName(string publicId)
+    {
+		byte[] key = Convert.FromBase64String(Configuration.GetValue<string>(IOConfigurationConstants.EncryptionKey));
+		byte[] iv = Convert.FromBase64String(Configuration.GetValue<string>(IOConfigurationConstants.EncryptionIV));
+        IOAESUtilities aesUtilities = new IOAESUtilities(key, iv);
+        return aesUtilities.Decrypt(publicId);
     }
 }
