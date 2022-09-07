@@ -26,7 +26,7 @@ public class MemberModel : Model
 
     public double LocationLongitude { get; set; }
 
-    public string ProfilePictureFileName { get; set; }
+    public string ProfilePicturePublicId { get; set; }
 
     public UserStatuses UserStatus { get; set; }
 }

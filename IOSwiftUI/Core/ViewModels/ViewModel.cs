@@ -51,8 +51,6 @@ public class ViewModel : IOViewModel
         IOCacheObject cachedObject = IOCache.GetCachedObject(cacheKey);
         if (cachedObject == null)
         {
-            
-
             CurrentMember = DBContext.Members
                                         .Select(m => new MemberModel()
                                         {
@@ -66,7 +64,7 @@ public class ViewModel : IOViewModel
                                             LocationName = m.LocationName,
                                             LocationLatitude = m.LocationLatitude,
                                             LocationLongitude = m.LocationLongitude,
-                                            ProfilePictureFileName = m.ProfilePictureFileName,
+                                            ProfilePicturePublicId = m.ProfilePictureFileName,
                                             UserStatus = m.UserStatus
                                         })
                                         .Where(m => m.ID == userId)
@@ -78,6 +76,10 @@ public class ViewModel : IOViewModel
             }
             else
             {
+                if (!String.IsNullOrEmpty(CurrentMember.ProfilePicturePublicId))
+                {
+                    CurrentMember.ProfilePicturePublicId = CreatePublicId(CurrentMember.ProfilePicturePublicId);
+                }
                 cachedObject = new IOCacheObject(cacheKey, CurrentMember, 60);
                 IOCache.CacheObject(cachedObject);
                 return (int)UserRoles.User;
