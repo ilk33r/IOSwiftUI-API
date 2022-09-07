@@ -22,9 +22,21 @@ public class MemberRegisterViewModel : ViewModel
         }
     }
 
+    public void CheckMemberUserName(string userName)
+    {
+        MemberEntity member = DBContext.Members.Where(m => m.UserName.ToLower().Equals(userName.ToLower()))
+                                .FirstOrDefault();
+
+        if (member != null)
+        {
+            throw new IOUserExistsException();
+        }
+    }
+
     public void RegisterMember(RegisterMemberRequestModel requestModel)
     {
         CheckMember(requestModel.Email);
+        CheckMemberUserName(requestModel.UserName);
 
         string decryptedPassword = DecryptString(requestModel.Password);
         string password = IOPasswordUtilities.HashPassword(decryptedPassword);

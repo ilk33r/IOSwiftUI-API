@@ -43,9 +43,29 @@ public class MemberRegisterController : Controller<MemberRegisterViewModel>
     [IORequireHTTPS]
     [IOUserRole(UserRoles.AnonmyMouse)]
     [HttpPost("[action]")]
+    public ResponseModel CheckMemberUserName([FromBody] CheckMemberUserNameRequestModel requestModel)
+    {
+        if (IORegexUtility.HasSpecialCharacter(requestModel.UserName))
+        {
+            throw new IOInvalidRequestException();
+        }
+
+        ViewModel.CheckMemberUserName(requestModel.UserName);
+        return new ResponseModel();
+    }
+
+    [IOValidateRequestModel]
+    [IORequireHTTPS]
+    [IOUserRole(UserRoles.AnonmyMouse)]
+    [HttpPost("[action]")]
     public ResponseModel Register([FromBody] RegisterMemberRequestModel requestModel)
     {
         if (!IORegexUtility.IsValidEmail(requestModel.Email))
+        {
+            throw new IOInvalidRequestException();
+        }
+
+        if (!IORegexUtility.HasSpecialCharacter(requestModel.UserName))
         {
             throw new IOInvalidRequestException();
         }
