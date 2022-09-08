@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using IOSwiftUI.Common.Enumerations;
@@ -49,6 +50,11 @@ public class MemberEntity
 
     public string ProfilePictureFileName { get; set; }
 
+    public string PhoneNumber { get; set; }
+
     [Required]
     public UserStatuses UserStatus { get; set; }
+
+    [ForeignKey("ImagesID")]
+    public ICollection<ImagesEntity> Images { get; set; }
 }

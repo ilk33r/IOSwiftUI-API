@@ -1,13 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
-
   <ItemGroup>
     <ProjectReference Include="..\..\Libraries\IOBootstrap-NET\MW\DataAccess\IOBootstrap.NET.MW.DataAccess.csproj" />
     <ProjectReference Include="..\Common\IOSwiftUI.Common.csproj" />
   </ItemGroup>
-
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <OutputType>Library</OutputType>
   </PropertyGroup>
-
 </Project>
