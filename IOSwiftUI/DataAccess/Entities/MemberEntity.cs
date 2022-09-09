@@ -57,4 +57,7 @@ public class MemberEntity
 
     [ForeignKey("MemberID")]
     public ICollection<ImagesEntity> Images { get; set; }
+
+    [ForeignKey("MemberID")]
+    public ICollection<MemberFollowingEntity> Followings { get; set; }
 }

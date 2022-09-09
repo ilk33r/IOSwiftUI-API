@@ -6,8 +6,9 @@ namespace IOSwiftUI.DataAccess.Context;
 
 public class DatabaseContext : IODatabaseContext<DatabaseContext>
 {
-    public virtual DbSet<MemberEntity> Members { get; set; }
-    public virtual DbSet<ImagesEntity> MemberImages { get; set; }
+    public DbSet<MemberEntity> Members { get; set; }
+    public DbSet<MemberFollowingEntity> MemberFollowings { get; set; }
+    public DbSet<ImagesEntity> MemberImages { get; set; }
 
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
@@ -26,5 +27,8 @@ public class DatabaseContext : IODatabaseContext<DatabaseContext>
 
         modelBuilder.Entity<ImagesEntity>().HasIndex(
                 entity => new { entity.CreateDate });
+
+        modelBuilder.Entity<MemberFollowingEntity>().HasIndex(
+                entity => new { entity.FollowDate });
     }
 }
