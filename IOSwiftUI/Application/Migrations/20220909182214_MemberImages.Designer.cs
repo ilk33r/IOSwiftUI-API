@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IOSwiftUI.Application.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220908161607_MemberImages")]
+    [Migration("20220909182214_MemberImages")]
     partial class MemberImages
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -481,7 +481,7 @@ namespace IOSwiftUI.Application.Migrations
                         new
                         {
                             ID = 1,
-                            Password = "$IOPSSWD$V1$10000$WitkW0dOGZqh3h9w+T/hpmGauOnpg3/MecP2JLC4cIa3Pm1B+8Fh+IPC9NNt+CrZ0ekPRjxXvpU6XPmty3tydFcOe9Qo4h/OblYPGRnl7g01LA4O1wIBIEGl+8J5k1Ep",
+                            Password = "$IOPSSWD$V1$10000$NNBIRS6vFuTDj0+LPwjxfUrepth9wjh/IRI38fpPd6dddKHm4K8jU8DU0ovzDel+F9r0E8f9l8z+xUcsPPNiWjKZsO1Ew6fk+qlkeNXvCL9pOTfKv/AcN589NjKPAg8N",
                             TokenDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UserName = "root",
                             UserRole = 0,
@@ -620,14 +620,14 @@ namespace IOSwiftUI.Application.Migrations
                     b.Property<string>("FileName")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("ImagesID")
+                    b.Property<int?>("MemberID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
                     b.HasIndex("CreateDate");
 
-                    b.HasIndex("ImagesID");
+                    b.HasIndex("MemberID");
 
                     b.ToTable("MemberImages");
                 });
@@ -750,7 +750,7 @@ namespace IOSwiftUI.Application.Migrations
                 {
                     b.HasOne("IOSwiftUI.DataAccess.Entities.MemberEntity", "Member")
                         .WithMany("Images")
-                        .HasForeignKey("ImagesID");
+                        .HasForeignKey("MemberID");
 
                     b.Navigation("Member");
                 });

@@ -26,14 +26,14 @@ namespace IOSwiftUI.Application.Migrations
                     FileName = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreateDate = table.Column<DateTimeOffset>(type: "datetime", nullable: false),
-                    ImagesID = table.Column<int>(type: "int", nullable: true)
+                    MemberID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MemberImages", x => x.ID);
                     table.ForeignKey(
-                        name: "FK_MemberImages_Members_ImagesID",
-                        column: x => x.ImagesID,
+                        name: "FK_MemberImages_Members_MemberID",
+                        column: x => x.MemberID,
                         principalTable: "Members",
                         principalColumn: "ID");
                 })
@@ -44,7 +44,7 @@ namespace IOSwiftUI.Application.Migrations
                 keyColumn: "ID",
                 keyValue: 1,
                 column: "Password",
-                value: "$IOPSSWD$V1$10000$WitkW0dOGZqh3h9w+T/hpmGauOnpg3/MecP2JLC4cIa3Pm1B+8Fh+IPC9NNt+CrZ0ekPRjxXvpU6XPmty3tydFcOe9Qo4h/OblYPGRnl7g01LA4O1wIBIEGl+8J5k1Ep");
+                value: "$IOPSSWD$V1$10000$NNBIRS6vFuTDj0+LPwjxfUrepth9wjh/IRI38fpPd6dddKHm4K8jU8DU0ovzDel+F9r0E8f9l8z+xUcsPPNiWjKZsO1Ew6fk+qlkeNXvCL9pOTfKv/AcN589NjKPAg8N");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MemberImages_CreateDate",
@@ -52,9 +52,9 @@ namespace IOSwiftUI.Application.Migrations
                 column: "CreateDate");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MemberImages_ImagesID",
+                name: "IX_MemberImages_MemberID",
                 table: "MemberImages",
-                column: "ImagesID");
+                column: "MemberID");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

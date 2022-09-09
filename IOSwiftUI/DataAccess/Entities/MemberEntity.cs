@@ -55,6 +55,6 @@ public class MemberEntity
     [Required]
     public UserStatuses UserStatus { get; set; }
 
-    [ForeignKey("ImagesID")]
+    [ForeignKey("MemberID")]
     public ICollection<ImagesEntity> Images { get; set; }
 }
