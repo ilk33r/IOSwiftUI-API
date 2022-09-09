@@ -33,6 +33,10 @@ public class MemberController : Controller<MemberViewModel>
         {
             member = ViewModel.GetCurrentMember();
         }
+        else
+        {
+            member = ViewModel.GetMemberByName(userName);
+        }
 
         return new GetMemberResponseModel(member);
     }

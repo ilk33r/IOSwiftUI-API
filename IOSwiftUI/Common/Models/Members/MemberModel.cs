@@ -28,5 +28,5 @@ public class MemberModel : Model
 
     public string ProfilePicturePublicId { get; set; }
 
-    public UserStatuses UserStatus { get; set; }
+    public UserStatuses? UserStatus { get; set; }
 }
