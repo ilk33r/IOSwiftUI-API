@@ -65,7 +65,7 @@ public class MemberRegisterController : Controller<MemberRegisterViewModel>
             throw new IOInvalidRequestException();
         }
 
-        if (!IORegexUtility.HasSpecialCharacter(requestModel.UserName))
+        if (IORegexUtility.HasSpecialCharacter(requestModel.UserName))
         {
             throw new IOInvalidRequestException();
         }
