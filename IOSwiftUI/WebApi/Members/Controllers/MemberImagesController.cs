@@ -25,6 +25,17 @@ public class MemberImagesController : Controller<MemberImagesViewModel>
     [IORequireHTTPS]
     [IOUserRole(UserRoles.User)]
     [HttpPost("[action]")]
+    public ImageCreateResponseModel AddMemberImage(IFormFile file)
+    {
+        string fileName = ViewModel.SaveFile(file);
+        ViewModel.AddMemberImage(fileName);
+
+        return new ImageCreateResponseModel(ViewModel.CreatePublicId(fileName));
+    }
+
+    [IORequireHTTPS]
+    [IOUserRole(UserRoles.User)]
+    [HttpPost("[action]")]
     public ImageCreateResponseModel UploadProfilePicture(IFormFile file)
     {
         string fileName = ViewModel.SaveFile(file);

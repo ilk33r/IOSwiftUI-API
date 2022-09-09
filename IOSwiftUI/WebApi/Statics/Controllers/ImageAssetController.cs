@@ -24,6 +24,7 @@ public class ImageAssetController : Controller<ImageAssetViewModel>
     [IORequireHTTPS]
     [IOUserRole(UserRoles.AnonmyMouse)]
     [HttpGet("[action]")]
+    [ResponseCache(Duration = 604800, Location = ResponseCacheLocation.Any, NoStore = false)]
     public FileStreamResult Get([FromQuery] string publicId)
     {
         FileStream imageFile = ViewModel.GetImageFile(publicId);
