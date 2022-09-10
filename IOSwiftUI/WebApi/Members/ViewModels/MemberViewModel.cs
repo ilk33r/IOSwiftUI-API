@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using IOBootstrap.NET.Common.Exceptions.Members;
 using IOBootstrap.NET.Common.Utilities;
-using IOSwiftUI.Common.Models;
+using IOSwiftUI.Common.Models.Members;
 using IOSwiftUI.Core.ViewModels;
 
 namespace IOSwiftUI.WebApi.Members.ViewModels;
@@ -14,6 +14,7 @@ public class MemberViewModel : ViewModel
         MemberModel currentMember = IOSerializableUtilities.Copy(CurrentMember);
         currentMember.UserStatus = null;
         currentMember.UserToken = null;
+        currentMember.Followings = null;
         return currentMember;
     }
 

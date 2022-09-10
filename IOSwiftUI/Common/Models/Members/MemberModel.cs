@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 using IOSwiftUI.Common.Enumerations;
 using IOSwiftUI.Common.Models.Base;
 
-namespace IOSwiftUI.Common.Models;
+namespace IOSwiftUI.Common.Models.Members;
 
 public class MemberModel : Model
 {
@@ -29,4 +30,6 @@ public class MemberModel : Model
     public string ProfilePicturePublicId { get; set; }
 
     public UserStatuses? UserStatus { get; set; }
+
+    public ICollection<MemberFollowingModel> Followings { get; set; }
 }

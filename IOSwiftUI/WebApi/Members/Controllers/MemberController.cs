@@ -3,7 +3,7 @@ using IOBootstrap.NET.Common.Attributes;
 using IOBootstrap.NET.Common.Enumerations;
 using IOBootstrap.NET.Common.Logger;
 using IOSwiftUI.Common.Messages.Members;
-using IOSwiftUI.Common.Models;
+using IOSwiftUI.Common.Models.Members;
 using IOSwiftUI.Core.Controllers;
 using IOSwiftUI.DataAccess.Context;
 using IOSwiftUI.WebApi.Members.ViewModels;

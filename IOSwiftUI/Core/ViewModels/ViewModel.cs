@@ -8,7 +8,7 @@ using IOBootstrap.NET.Common.Utilities;
 using IOBootstrap.NET.Core.ViewModels;
 using IOSwiftUI.Common.Constants;
 using IOSwiftUI.Common.Enumerations;
-using IOSwiftUI.Common.Models;
+using IOSwiftUI.Common.Models.Members;
 using IOSwiftUI.DataAccess.Context;
 using Microsoft.Extensions.Configuration;
 
@@ -65,7 +65,15 @@ public class ViewModel : IOViewModel
                                             LocationLatitude = m.LocationLatitude,
                                             LocationLongitude = m.LocationLongitude,
                                             ProfilePicturePublicId = m.ProfilePictureFileName,
-                                            UserStatus = m.UserStatus
+                                            UserStatus = m.UserStatus,
+                                            Followings = DBContext.MemberFollowings
+                                                                        .Select(mf => new MemberFollowingModel()
+                                                                        {
+                                                                            MemberID = mf.Member.ID,
+                                                                            FollowingMemberID = mf.FollowingMember.ID
+                                                                        })
+                                                                        .Where(mf => mf.MemberID == m.ID)
+                                                                        .ToList()
                                         })
                                         .Where(m => m.ID == userId)
                                         .FirstOrDefault();

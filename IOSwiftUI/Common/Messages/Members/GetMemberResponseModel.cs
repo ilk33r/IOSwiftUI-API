@@ -1,5 +1,5 @@
 using IOSwiftUI.Common.Messages.Base;
-using IOSwiftUI.Common.Models;
+using IOSwiftUI.Common.Models.Members;
 
 namespace IOSwiftUI.Common.Messages.Members;
 
