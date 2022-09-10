@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IOSwiftUI.Application.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220909194059_MemberFollowing")]
+    [Migration("20220910201720_MemberFollowing")]
     partial class MemberFollowing
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -481,7 +481,7 @@ namespace IOSwiftUI.Application.Migrations
                         new
                         {
                             ID = 1,
-                            Password = "$IOPSSWD$V1$10000$PfNx26e7O+9S260DpUIh6TqZPbJYS51BBa6qIJg45z0OCjdBJPVoVrBQy0SXV79nj1MbP+EAvqqHCaUym96yc1jHhZLt4eRNMycuhROzxf4jeID6MgHeipLxOa+xv6kp",
+                            Password = "$IOPSSWD$V1$10000$Shh2fqbP8+LjYoxB6xEPecchSvGru3BlIHtN1xOgUsJX1S/3tsb+UgAom8Hx23deXS2vC7Sfgzf1GgWVv4d2VwNol0/XfistcLkcslw05ShPde7DILSxW8CoGlgqMFhg",
                             TokenDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UserName = "root",
                             UserRole = 0,
@@ -639,7 +639,7 @@ namespace IOSwiftUI.Application.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTimeOffset>("BirthDate")
-                        .HasColumnType("datetime");
+                        .HasColumnType("DATETIME");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -716,12 +716,17 @@ namespace IOSwiftUI.Application.Migrations
                     b.Property<DateTimeOffset>("FollowDate")
                         .HasColumnType("datetime");
 
-                    b.Property<int?>("MemberID")
+                    b.Property<int>("FollowingMemberID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MemberID")
                         .HasColumnType("int");
 
                     b.HasKey("ID");
 
                     b.HasIndex("FollowDate");
+
+                    b.HasIndex("FollowingMemberID");
 
                     b.HasIndex("MemberID");
 
@@ -778,9 +783,19 @@ namespace IOSwiftUI.Application.Migrations
 
             modelBuilder.Entity("IOSwiftUI.DataAccess.Entities.MemberFollowingEntity", b =>
                 {
+                    b.HasOne("IOSwiftUI.DataAccess.Entities.MemberEntity", "FollowingMember")
+                        .WithMany()
+                        .HasForeignKey("FollowingMemberID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("IOSwiftUI.DataAccess.Entities.MemberEntity", "Member")
-                        .WithMany("Followings")
-                        .HasForeignKey("MemberID");
+                        .WithMany()
+                        .HasForeignKey("MemberID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FollowingMember");
 
                     b.Navigation("Member");
                 });
@@ -792,8 +807,6 @@ namespace IOSwiftUI.Application.Migrations
 
             modelBuilder.Entity("IOSwiftUI.DataAccess.Entities.MemberEntity", b =>
                 {
-                    b.Navigation("Followings");
-
                     b.Navigation("Images");
                 });
 #pragma warning restore 612, 618

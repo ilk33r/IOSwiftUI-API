@@ -10,7 +10,12 @@ public class MemberFollowingEntity
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int ID { get; set; }
 
+    [Required]
     public DateTimeOffset FollowDate { get; set; }
 
+    [Required]
     public MemberEntity Member { get; set; }
+
+    [Required]
+    public MemberEntity FollowingMember { get; set; }
 }

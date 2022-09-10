@@ -27,6 +27,7 @@ public class MemberEntity
     [Required]
     public DateTimeOffset RegisterDate { get; set; }
 
+    [Column(TypeName = "DATETIME")]
     public DateTimeOffset BirthDate { get; set; }
 
     [Required]
@@ -57,7 +58,4 @@ public class MemberEntity
 
     [ForeignKey("MemberID")]
     public ICollection<ImagesEntity> Images { get; set; }
-
-    [ForeignKey("MemberID")]
-    public ICollection<MemberFollowingEntity> Followings { get; set; }
 }
