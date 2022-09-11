@@ -1,3 +1,4 @@
+using System;
 using IOBootstrap.NET.Common.Attributes;
 using IOBootstrap.NET.Common.Enumerations;
 using IOBootstrap.NET.Common.Exceptions.Common;
@@ -54,10 +55,11 @@ public class MemberRegisterController : Controller<MemberRegisterViewModel>
         return new ResponseModel();
     }
 
+    [Obsolete("Check this")]
     [IOValidateRequestModel]
     [IORequireHTTPS]
     [IOUserRole(UserRoles.AnonmyMouse)]
-    [HttpPost("[action]")]
+    [HttpPut("[action]")]
     public ResponseModel Register([FromBody] RegisterMemberRequestModel requestModel)
     {
         if (!IORegexUtility.IsValidEmail(requestModel.Email))

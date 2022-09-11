@@ -1,3 +1,4 @@
+using System;
 using IOBootstrap.NET.Common.Attributes;
 using IOBootstrap.NET.Common.Enumerations;
 using IOBootstrap.NET.Common.Logger;
@@ -24,7 +25,7 @@ public class MemberImagesController : Controller<MemberImagesViewModel>
 
     [IORequireHTTPS]
     [IOUserRole(UserRoles.User)]
-    [HttpPost("[action]")]
+    [HttpPut("[action]")]
     public ImageCreateResponseModel AddMemberImage(IFormFile file)
     {
         string fileName = ViewModel.SaveFile(file);
@@ -33,6 +34,7 @@ public class MemberImagesController : Controller<MemberImagesViewModel>
         return new ImageCreateResponseModel(ViewModel.CreatePublicId(fileName));
     }
 
+    [Obsolete("Check this.")]
     [IORequireHTTPS]
     [IOUserRole(UserRoles.User)]
     [HttpPost("[action]")]
