@@ -2,6 +2,7 @@ using IOBootstrap.NET.Common.Attributes;
 using IOBootstrap.NET.Common.Enumerations;
 using IOBootstrap.NET.Common.Logger;
 using IOSwiftUI.Common.Messages.Base;
+using IOSwiftUI.Common.Messages.Members;
 using IOSwiftUI.Core.Controllers;
 using IOSwiftUI.DataAccess.Context;
 using IOSwiftUI.WebApi.Members.ViewModels;
@@ -22,20 +23,22 @@ public class MemberFollowingController : Controller<MemberFollowingViewModel>
     }
 
     [IORequireHTTPS]
+    [IOValidateRequestModel]
     [IOUserRole(UserRoles.User)]
-    [HttpGet("[action]")]
-    public ResponseModel Follow([FromQuery] int memberId)
+    [HttpPost("[action]")]
+    public ResponseModel Follow([FromBody] MemberFollowingRequestModel requestModel)
     {
-        ViewModel.Follow(memberId);
+        ViewModel.Follow(requestModel.MemberID);
         return new ResponseModel();
     }
 
     [IORequireHTTPS]
+    [IOValidateRequestModel]
     [IOUserRole(UserRoles.User)]
-    [HttpGet("[action]")]
-    public ResponseModel UnFollow([FromQuery] int memberId)
+    [HttpPost("[action]")]
+    public ResponseModel UnFollow([FromBody] MemberFollowingRequestModel requestModel)
     {
-        ViewModel.UnFollow(memberId);
+        ViewModel.UnFollow(requestModel.MemberID);
         return new ResponseModel();
     }
 }
