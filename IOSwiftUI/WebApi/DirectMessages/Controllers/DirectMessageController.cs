@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using IOBootstrap.NET.Common.Attributes;
 using IOBootstrap.NET.Common.Enumerations;
 using IOBootstrap.NET.Common.Logger;
@@ -20,6 +21,15 @@ public class DirectMessageController : Controller<DirectMessageViewModel>
 {
     public DirectMessageController(IConfiguration configuration, IWebHostEnvironment environment, ILogger<IOLoggerType> logger, DatabaseContext dbContext) : base(configuration, environment, logger, dbContext)
     {
+    }
+
+    [IORequireHTTPS]
+    [IOUserRole(UserRoles.User)]
+    [HttpGet("[action]")]
+    public InboxResponseModel GetInboxes()
+    {
+        IList<InboxModel> inboxes = ViewModel.GetInboxes();
+        return new InboxResponseModel(inboxes);
     }
 
     [IORequireHTTPS]

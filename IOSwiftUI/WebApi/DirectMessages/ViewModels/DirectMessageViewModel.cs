@@ -1,15 +1,61 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using IOBootstrap.NET.Common.Exceptions.Members;
+using IOBootstrap.NET.Common.Utilities;
+using IOSwiftUI.Common.Constants;
 using IOSwiftUI.Common.Models.DirectMessages;
 using IOSwiftUI.Core.ViewModels;
 using IOSwiftUI.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace IOSwiftUI.WebApi.DirectMessages.ViewModels;
 
 public class DirectMessageViewModel : ViewModel
 {
+
+    public IList<InboxModel> GetInboxes()
+    {
+        List<InboxModel> inboxes = DBContext.Inbox
+                                            .Select(i => new InboxModel()
+                                            {
+                                                InboxID = i.ID,
+                                                FromMemberID = i.FromMember.ID,
+                                                UserName = i.ToMember.UserName,
+                                                NameSurname = i.ToMember.Name + " " + i.ToMember.Surname,
+                                                ProfilePicturePublicID = i.ToMember.ProfilePictureFileName,
+                                                UpdateDate = i.UpdateDate,
+                                                UnreadMessageCount = i.UnreadMessageCount,
+                                                LastMessage = i.LastMessage == null ? null : new MessageModel()
+                                                {
+                                                    MessageID = i.LastMessage.ID,
+                                                    Message = i.LastMessage.Message,
+                                                    MessageDate = i.LastMessage.MessageDate
+                                                }
+                                            })
+                                            .Where(i => i.FromMemberID == CurrentMember.ID)
+                                            .ToList();
+
+        foreach(InboxModel inbox in inboxes)
+        {
+            if (!String.IsNullOrEmpty(inbox.ProfilePicturePublicID))
+            {
+                inbox.ProfilePicturePublicID = CreatePublicId(inbox.ProfilePicturePublicID);
+            }
+
+            if (Configuration.GetValue<bool>(ConfigurationConstants.PasswordDecryptionEnabledKey))
+            {
+                if (inbox.LastMessage != null && !String.IsNullOrEmpty(inbox.LastMessage.Message))
+                {
+                    inbox.LastMessage.Message = EncryptString(inbox.LastMessage.Message);
+                }
+            }
+        }
+
+        return inboxes;
+    }
+
     public InboxModel CreateConversation(int toMemberID)
     {
         MemberEntity toMember = DBContext.Members
