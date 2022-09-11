@@ -51,11 +51,27 @@ public class MemberEntity
 
     public string ProfilePictureFileName { get; set; }
 
+    [StringLength(16)]
     public string PhoneNumber { get; set; }
+
+    [StringLength(6)]
+    public string OneTimeCode { get; set; }
 
     [Required]
     public UserStatuses UserStatus { get; set; }
 
     [ForeignKey("MemberID")]
     public ICollection<ImagesEntity> Images { get; set; }
+
+    [Required]
+    [StringLength(128)]
+    public string DeviceId { get; set; }
+        
+    [Required]
+    [StringLength(32)]
+    public string DeviceManifacturer { get; set; }
+
+    [Required]
+    [StringLength(32)]
+    public string DeviceModel { get; set; }
 }
