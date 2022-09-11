@@ -30,4 +30,13 @@ public class DiscoverController : Controller<DiscoverViewModel>
     {
         return ViewModel.DiscoverImages(requestModel.Pagination);
     }
+
+    [IORequireHTTPS]
+    [IOUserRole(UserRoles.User)]
+    [IOValidateRequestModel]
+    [HttpPost("[action]")]
+    public DiscoverImagesResponseModel DiscoverAll([FromBody] PaginationRequestModel requestModel)
+    {
+        return ViewModel.DiscoverImages(requestModel.Pagination);
+    }
 }

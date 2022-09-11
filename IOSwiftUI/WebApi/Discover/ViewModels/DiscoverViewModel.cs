@@ -40,4 +40,30 @@ public class DiscoverViewModel : ViewModel
         responsePagination.Count = followingImages.Count();
         return new DiscoverImagesResponseModel(followingImages, responsePagination);
     }
+
+    public DiscoverImagesResponseModel DiscoverAllImages(PaginationModel pagination)
+    {
+        PaginationModel responsePagination = new PaginationModel();
+        responsePagination.Start = pagination.Start;
+        responsePagination.Total = DBContext.MemberImages
+                                                .Count();
+
+        IList<DiscoverImageModel> followingImages = DBContext.MemberImages
+                                                                .Select(i => new DiscoverImageModel()
+                                                                {
+                                                                    MemberId = i.Member.ID,
+                                                                    PublicId = i.FileName,
+                                                                    UserName = i.Member.UserName,
+                                                                    UserNameAndSurname = i.Member.Name + " "  + i.Member.Surname,
+                                                                    UserProfilePicturePublicId = i.Member.ProfilePictureFileName,
+                                                                    CreateDate = i.CreateDate
+                                                                })
+                                                                .OrderByDescending(i => i.CreateDate)
+                                                                .Skip(pagination.Start)
+                                                                .Take(pagination.Count)
+                                                                .ToList();
+
+        responsePagination.Count = followingImages.Count();
+        return new DiscoverImagesResponseModel(followingImages, responsePagination);
+    }
 }
