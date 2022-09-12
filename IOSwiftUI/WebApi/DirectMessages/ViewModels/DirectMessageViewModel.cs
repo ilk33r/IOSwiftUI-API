@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using IOBootstrap.NET.Common.Exceptions.Members;
-using IOBootstrap.NET.Common.Utilities;
 using IOSwiftUI.Common.Constants;
 using IOSwiftUI.Common.Models.DirectMessages;
 using IOSwiftUI.Core.ViewModels;
@@ -94,6 +93,69 @@ public class DirectMessageViewModel : ViewModel
         };
 
         return response;
+    }
+
+    public void SendMessage(int toMemberID, string message)
+    {
+        MemberEntity fromMember = new MemberEntity()
+        {
+            ID = CurrentMember.ID
+        };
+
+        MemberEntity toMember = new MemberEntity()
+        {
+            ID = toMemberID
+        };
+
+        DBContext.Attach(fromMember);
+        DBContext.Attach(toMember);
+
+        InboxEntity fromMemberConversation = CreateConversation(fromMember, toMember);
+        InboxEntity toMemberConversation = CreateConversation(toMember, fromMember);
+
+        string decryptedMessage;
+        if (Configuration.GetValue<bool>(ConfigurationConstants.PasswordDecryptionEnabledKey))
+        {
+            decryptedMessage = DecryptString(message);
+        }
+        else
+        {
+            decryptedMessage = message;
+        }
+
+        MessageEntity fromMemberMessage = new MessageEntity()
+        {
+            InboxID = fromMemberConversation.ID,
+            FromMember = fromMember,
+            ToMember = toMember,
+            Message = decryptedMessage,
+            MessageDate = DateTimeOffset.UtcNow
+        };
+
+        DBContext.Add(fromMemberMessage);
+
+        fromMemberConversation.UnreadMessageCount = 0;
+        fromMemberConversation.LastMessage = fromMemberMessage;
+        fromMemberConversation.UpdateDate = fromMemberMessage.MessageDate;
+        DBContext.Update(fromMemberConversation);
+
+        MessageEntity toMemberMessage = new MessageEntity()
+        {
+            InboxID = toMemberConversation.ID,
+            FromMember = toMember,
+            ToMember = fromMember,
+            Message = decryptedMessage,
+            MessageDate = DateTimeOffset.UtcNow
+        };
+
+        DBContext.Add(toMemberMessage);
+
+        toMemberConversation.UnreadMessageCount += 1;
+        toMemberConversation.LastMessage = toMemberMessage;
+        toMemberConversation.UpdateDate = toMemberMessage.MessageDate;
+        DBContext.Update(toMemberConversation);
+
+        DBContext.SaveChanges();
     }
 
     private InboxEntity CreateConversation(MemberEntity fromMember, MemberEntity toMember)

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using IOBootstrap.NET.Common.Attributes;
 using IOBootstrap.NET.Common.Enumerations;
 using IOBootstrap.NET.Common.Logger;
+using IOSwiftUI.Common.Messages.Base;
 using IOSwiftUI.Common.Messages.DirectMessages;
 using IOSwiftUI.Common.Models.DirectMessages;
 using IOSwiftUI.Core.Controllers;
@@ -40,5 +41,15 @@ public class DirectMessageController : Controller<DirectMessageViewModel>
     {
         InboxModel inbox = ViewModel.CreateConversation(requestModel.ToMemberID);
         return new CreateInboxResponseModel(inbox);
+    }
+
+    [IORequireHTTPS]
+    [IOValidateRequestModel]
+    [IOUserRole(UserRoles.User)]
+    [HttpPut("[action]")]
+    public ResponseModel SendMessage([FromBody] SendMessageRequestModel requestModel)
+    {
+        ViewModel.SendMessage(requestModel.ToMemberID, requestModel.EncryptedMessage);
+        return new ResponseModel();
     }
 }
