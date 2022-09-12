@@ -1,5 +1,6 @@
 using System;
 using IOBootstrap.NET.Common.Exceptions.Members;
+using IOSwiftUI.Common.Exceptions;
 using IOSwiftUI.Core.ViewModels;
 using IOSwiftUI.DataAccess.Entities;
 
@@ -27,8 +28,24 @@ public class MemberImagesViewModel : ImageViewModel
         DBContext.SaveChanges();
     }
 
+    public void DeleteProfilePicture()
+    {
+        if (String.IsNullOrEmpty(CurrentMember.ProfilePicturePublicId))
+        {
+            throw new ImageNotFoundException();
+        }
+
+        string fileName = GetFileName(CurrentMember.ProfilePicturePublicId);
+        RemoveFile(fileName);
+    }
+
     public void UpdateMemberProfilePicture(string fileName)
     {
+        if (!String.IsNullOrEmpty(CurrentMember.ProfilePicturePublicId))
+        {
+            throw new MemberHasProfilePictureException();
+        }
+
         MemberEntity member = DBContext.Members.Find(CurrentMember.ID);
         if (member == null)
         {

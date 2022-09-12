@@ -2,6 +2,7 @@ using System;
 using IOBootstrap.NET.Common.Attributes;
 using IOBootstrap.NET.Common.Enumerations;
 using IOBootstrap.NET.Common.Logger;
+using IOSwiftUI.Common.Messages.Base;
 using IOSwiftUI.Common.Messages.Images;
 using IOSwiftUI.Core.Controllers;
 using IOSwiftUI.DataAccess.Context;
@@ -34,10 +35,18 @@ public class MemberImagesController : Controller<MemberImagesViewModel>
         return new ImageCreateResponseModel(ViewModel.CreatePublicId(fileName));
     }
 
-    [Obsolete("Check this.")]
     [IORequireHTTPS]
     [IOUserRole(UserRoles.User)]
-    [HttpPost("[action]")]
+    [HttpDelete("[action]")]
+    public ResponseModel DeleteProfilePicture()
+    {
+        ViewModel.DeleteProfilePicture();
+        return new ResponseModel();
+    }
+
+    [IORequireHTTPS]
+    [IOUserRole(UserRoles.User)]
+    [HttpPut("[action]")]
     public ImageCreateResponseModel UploadProfilePicture(IFormFile file)
     {
         string fileName = ViewModel.SaveFile(file);
