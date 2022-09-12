@@ -11,6 +11,7 @@ public class DatabaseContext : IODatabaseContext<DatabaseContext>
     public DbSet<ImagesEntity> MemberImages { get; set; }
     public DbSet<InboxEntity> Inbox { get; set; }
     public DbSet<MessageEntity> DirectMessages { get; set; }
+    public DbSet<OneTimeCodeEntity> OneTimeCodes { get; set; }
 
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
@@ -24,6 +25,7 @@ public class DatabaseContext : IODatabaseContext<DatabaseContext>
         BuildMemberImagesEntity(modelBuilder);
         BuildMemberFollowingEntity(modelBuilder);
         BuildMemberInboxEntity(modelBuilder);
+        BuildOneTimeCodeEntity(modelBuilder);
     }
 
     private void BuildMemberEntity(ModelBuilder modelBuilder)
@@ -63,5 +65,11 @@ public class DatabaseContext : IODatabaseContext<DatabaseContext>
 
         modelBuilder.Entity<MessageEntity>().HasIndex(
                 entity => new { entity.MessageDate });
+    }
+
+    private void BuildOneTimeCodeEntity(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<OneTimeCodeEntity>().HasIndex(
+                entity => new { entity.PhoneNumber }).IsUnique(true);
     }
 }

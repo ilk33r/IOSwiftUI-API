@@ -54,9 +54,6 @@ public class MemberEntity
     [StringLength(16)]
     public string PhoneNumber { get; set; }
 
-    [StringLength(6)]
-    public string OneTimeCode { get; set; }
-
     [Required]
     public UserStatuses UserStatus { get; set; }
 
