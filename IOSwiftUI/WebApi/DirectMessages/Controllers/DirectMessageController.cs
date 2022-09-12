@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using IOBootstrap.NET.Common.Attributes;
 using IOBootstrap.NET.Common.Enumerations;
+using IOBootstrap.NET.Common.Exceptions.Common;
 using IOBootstrap.NET.Common.Logger;
 using IOSwiftUI.Common.Messages.Base;
 using IOSwiftUI.Common.Messages.DirectMessages;
@@ -50,6 +51,20 @@ public class DirectMessageController : Controller<DirectMessageViewModel>
     public ResponseModel SendMessage([FromBody] SendMessageRequestModel requestModel)
     {
         ViewModel.SendMessage(requestModel.ToMemberID, requestModel.EncryptedMessage);
+        return new ResponseModel();
+    }
+
+    [IORequireHTTPS]
+    [IOUserRole(UserRoles.User)]
+    [HttpDelete("[action]")]
+    public ResponseModel DeleteInbox([FromQuery] int? inboxID)
+    {
+        if (inboxID == null || inboxID <= 0)
+        {
+            throw new IOInvalidRequestException();
+        }
+
+        ViewModel.DeleteInbox(inboxID ?? 0);
         return new ResponseModel();
     }
 }

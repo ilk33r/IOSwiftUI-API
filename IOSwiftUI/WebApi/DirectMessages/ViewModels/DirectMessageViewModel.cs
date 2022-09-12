@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using IOBootstrap.NET.Common.Exceptions.Members;
 using IOSwiftUI.Common.Constants;
+using IOSwiftUI.Common.Exceptions;
 using IOSwiftUI.Common.Models.DirectMessages;
 using IOSwiftUI.Core.ViewModels;
 using IOSwiftUI.DataAccess.Entities;
@@ -155,6 +156,30 @@ public class DirectMessageViewModel : ViewModel
         toMemberConversation.UpdateDate = toMemberMessage.MessageDate;
         DBContext.Update(toMemberConversation);
 
+        DBContext.SaveChanges();
+    }
+
+    public void DeleteInbox(int inboxID)
+    {
+        InboxEntity inbox = DBContext.Inbox
+                                        .Include(i => i.Messages)
+                                        .Where(i => i.ID == inboxID)
+                                        .FirstOrDefault();
+
+        if (inbox == null)
+        {
+            throw new InboxNotFoundException();
+        }
+
+        inbox.LastMessage = null;
+        DBContext.SaveChanges();
+        
+        foreach (MessageEntity message in inbox.Messages)
+        {
+            DBContext.Remove(message);
+        }
+
+        DBContext.Remove(inbox);
         DBContext.SaveChanges();
     }
 
