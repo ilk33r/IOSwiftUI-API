@@ -8,8 +8,10 @@ using IOBootstrap.NET.Common.Utilities;
 using IOBootstrap.NET.Core.ViewModels;
 using IOSwiftUI.Common.Constants;
 using IOSwiftUI.Common.Enumerations;
+using IOSwiftUI.Common.Exceptions;
 using IOSwiftUI.Common.Models.Members;
 using IOSwiftUI.DataAccess.Context;
+using IOSwiftUI.DataAccess.Entities;
 using Microsoft.Extensions.Configuration;
 
 namespace IOSwiftUI.Core.ViewModels;
@@ -117,5 +119,25 @@ public class ViewModel : IOViewModel
 		byte[] iv = Convert.FromBase64String(Configuration.GetValue<string>(IOConfigurationConstants.EncryptionIV));
         IOAESUtilities aesUtilities = new IOAESUtilities(key, iv);
         return aesUtilities.Decrypt(publicId);
+    }
+
+    public void CheckOTPValidated(string phoneNumber)
+    {
+        OneTimeCodeEntity otpEntity = DBContext.OneTimeCodes.Where(otp => otp.PhoneNumber.Equals(phoneNumber))
+                                                .FirstOrDefault();
+
+        if (otpEntity == null)
+        {
+            throw new WrongOTPException();
+        }
+
+        long currentUnixTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        int otpValidateTimeout = Configuration.GetValue<int>(ConfigurationConstants.OTPValidateTimeout);
+        DateTimeOffset validateDate = otpEntity.ValidateDate ?? DateTimeOffset.UtcNow.AddHours(-1);
+
+        if (otpEntity.IsValidated && currentUnixTime < (validateDate.ToUnixTimeSeconds() + otpValidateTimeout))
+        {
+            throw new WrongOTPException();
+        }
     }
 }

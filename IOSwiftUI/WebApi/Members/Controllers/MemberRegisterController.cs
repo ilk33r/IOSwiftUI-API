@@ -55,7 +55,6 @@ public class MemberRegisterController : Controller<MemberRegisterViewModel>
         return new ResponseModel();
     }
 
-    [Obsolete("Check this")]
     [IOValidateRequestModel]
     [IORequireHTTPS]
     [IOUserRole(UserRoles.AnonmyMouse)]

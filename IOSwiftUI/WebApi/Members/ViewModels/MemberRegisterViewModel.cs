@@ -35,6 +35,7 @@ public class MemberRegisterViewModel : ViewModel
 
     public void RegisterMember(RegisterMemberRequestModel requestModel)
     {
+        CheckOTPValidated(requestModel.PhoneNumber);
         CheckMember(requestModel.Email);
         CheckMemberUserName(requestModel.UserName);
 
@@ -52,7 +53,11 @@ public class MemberRegisterViewModel : ViewModel
             LocationName = requestModel.LocationName,
             LocationLatitude = requestModel.LocationLatitude,
             LocationLongitude = requestModel.LocationLongitude,
-            UserStatus = UserStatuses.Active
+            PhoneNumber = requestModel.PhoneNumber,
+            UserStatus = UserStatuses.Active,
+            DeviceId = requestModel.DeviceId,
+            DeviceManifacturer = requestModel.DeviceManifacturer,
+            DeviceModel = requestModel.DeviceModel
         };
 
         DBContext.Members.Add(newMember);

@@ -14,6 +14,7 @@ public class RegisterMemberRequestModel : RequestModel
     [StringLength(512, MinimumLength = 8)]
     public string Password { get; set; }
 
+    [Required]
     public DateTimeOffset BirthDate { get; set; }
 
     [Required]
@@ -34,4 +35,20 @@ public class RegisterMemberRequestModel : RequestModel
     public double LocationLatitude { get; set; }
 
     public double LocationLongitude { get; set; }
+
+    [Required]
+    [StringLength(16)]
+    public string PhoneNumber { get; set; }
+
+    [Required]
+    [StringLength(128)]
+    public string DeviceId { get; set; }
+
+    [Required]
+    [StringLength(32)]
+    public string DeviceManifacturer { get; set; }
+
+    [Required]
+    [StringLength(32)]
+    public string DeviceModel { get; set; }
 }
