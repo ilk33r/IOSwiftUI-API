@@ -55,6 +55,15 @@ public class MemberRegisterController : Controller<MemberRegisterViewModel>
         return new ResponseModel();
     }
 
+    [IOValidateRequestModel]
+    [IORequireHTTPS]
+    [IOUserRole(UserRoles.AnonmyMouse)]
+    [HttpPost("[action]")]
+    public SendOTPResponseModel SendOTP([FromBody] SendOTPRequestModel requestModel)
+    {
+        return new SendOTPResponseModel(ViewModel.SendOTP(requestModel.PhoneNumber));
+    }
+
     [Obsolete("Check this")]
     [IOValidateRequestModel]
     [IORequireHTTPS]

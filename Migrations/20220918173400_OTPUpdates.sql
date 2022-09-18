@@ -1,0 +1,14 @@
+﻿START TRANSACTION;
+
+ALTER TABLE `OneTimeCodes` MODIFY COLUMN `ValidateDate` DATETIME NULL;
+
+UPDATE `Users` SET `Password` = '$IOPSSWD$V1$10000$qce2k3WBRz3sWBY8efWGxMdFFPakirjhVsM7BGeQygXT74lbSTA5bsmD8EJxArHTGG5s++WgMBlUIhAKB0DxZ9kirRoQa3A+UTsH/USVd9vvCzPG4pL74/IVkK3ws/my'
+WHERE `ID` = 1;
+SELECT ROW_COUNT();
+
+
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20220918173400_OTPUpdates', '6.0.2');
+
+COMMIT;
+

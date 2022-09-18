@@ -8,6 +8,8 @@ public static class ExceptionMessages
     public const int MemberAlreadyFollowingCode = 801;
     public const int MemberNotFollowingCode = 802;
     public const int MemberHasAlreadyProfilePictureCode = 803;
+    public const int MemberOTPAlreadyValidatedCode = 804;
+    public const int MemberOTPAlreadySentCode = 805;
     public const int InboxNotFoundCode = 902;
 
     public const string ImageCorruptMessage = "Could not read image file.";
@@ -16,5 +18,7 @@ public static class ExceptionMessages
     public const string MemberAlreadyFollowingMessage= "You are already following this user.";
     public const string MemberNotFollowingMessage = "You are not following this user.";
     public const string MemberHasAlreadyProfilePictureMessage = "You have a profile picture.";
+    public const string MemberOTPAlreadyValidatedMessage = "Your one-time password was recently verified.";
+    public const string MemberOTPAlreadySentdMessage = "Your one-time password was sent recently.";
     public const string InboxNotFoundMessage = "Could not found inbox.";
 }

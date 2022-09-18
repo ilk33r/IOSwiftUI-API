@@ -18,11 +18,13 @@ public class OneTimeCodeEntity
     [StringLength(6)]
     public string OneTimeCode { get; set; }
 
+    [Required]
     [Column(TypeName = "DATETIME")]
     public DateTimeOffset CreateDate { get; set; }
 
     [Column(TypeName = "DATETIME")]
-    public DateTimeOffset ValidateDate { get; set; }
+    public DateTimeOffset? ValidateDate { get; set; }
 
+    [Required]
     public bool IsValidated { get; set; }
 }
