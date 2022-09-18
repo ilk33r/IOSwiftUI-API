@@ -1,6 +1,6 @@
 using IOSwiftUI.Common.Messages.Base;
 
-namespace IOSwiftUI.Common.Messages.Members;
+namespace IOSwiftUI.Common.Messages.OTP;
 
 public class SendOTPResponseModel : ResponseModel
 {

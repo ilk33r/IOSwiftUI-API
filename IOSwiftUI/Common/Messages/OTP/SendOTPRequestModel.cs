@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using IOSwiftUI.Common.Messages.Base;
 
-namespace IOSwiftUI.Common.Messages.Members;
+namespace IOSwiftUI.Common.Messages.OTP;
 
 public class SendOTPRequestModel : RequestModel
 {
