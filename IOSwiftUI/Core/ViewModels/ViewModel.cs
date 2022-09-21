@@ -135,7 +135,7 @@ public class ViewModel : IOViewModel
         int otpValidateTimeout = Configuration.GetValue<int>(ConfigurationConstants.OTPValidateTimeout);
         DateTimeOffset validateDate = otpEntity.ValidateDate ?? DateTimeOffset.UtcNow.AddHours(-1);
 
-        if (otpEntity.IsValidated && currentUnixTime < (validateDate.ToUnixTimeSeconds() + otpValidateTimeout))
+        if (otpEntity.IsValidated && currentUnixTime > (validateDate.ToUnixTimeSeconds() + otpValidateTimeout))
         {
             throw new WrongOTPException();
         }
