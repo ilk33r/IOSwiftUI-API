@@ -31,4 +31,14 @@ public class MemberUpdateController : Controller<MemberUpdateViewModel>
         ViewModel.ChangePassword(requestModel.OldPassword, requestModel.NewPassword);
         return new ResponseModel();
     }
+
+    [IORequireHTTPS]
+    [IOValidateRequestModel]
+    [IOUserRole(UserRoles.User)]
+    [HttpPatch("[action]")]
+    public ResponseModel UpdateMember([FromBody] RegisterMemberRequestModel requestModel)
+    {
+        ViewModel.UpdateMember(requestModel);
+        return new ResponseModel();
+    }
 }

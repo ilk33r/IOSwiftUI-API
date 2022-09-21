@@ -1,5 +1,9 @@
+using System;
+using IOBootstrap.NET.Common.Cache;
 using IOBootstrap.NET.Common.Exceptions.Members;
 using IOBootstrap.NET.Common.Utilities;
+using IOSwiftUI.Common.Constants;
+using IOSwiftUI.Common.Messages.Members;
 using IOSwiftUI.Core.ViewModels;
 using IOSwiftUI.DataAccess.Entities;
 
@@ -30,5 +34,29 @@ public class MemberUpdateViewModel : ViewModel
         member.Password = IOPasswordUtilities.HashPassword(decryptedNewPassword);
         DBContext.Update(member);
         DBContext.SaveChanges();
+    }
+
+    public void UpdateMember(RegisterMemberRequestModel requestModel)
+    {
+        MemberEntity member = DBContext.Members
+                                        .Find(CurrentMember.ID);
+
+        if (member == null)
+        {
+            throw new IOUserNotFoundException();
+        }
+
+        member.BirthDate = requestModel.BirthDate;
+        member.Name = requestModel.Name;
+        member.Surname = requestModel.Surname;
+        member.LocationName = requestModel.LocationName;
+        member.LocationLatitude = requestModel.LocationLatitude;
+        member.LocationLongitude = requestModel.LocationLongitude;
+
+        DBContext.Update(member);
+        DBContext.SaveChanges();
+
+        string cacheKey = String.Format(CacheKeys.UserCacheKey, CurrentMember.ID);
+        IOCache.InvalidateCache(cacheKey);
     }
 }
