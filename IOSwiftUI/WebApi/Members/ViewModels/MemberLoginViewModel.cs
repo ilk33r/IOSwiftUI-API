@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using IOBootstrap.NET.Common.Cache;
 using IOBootstrap.NET.Common.Exceptions.Common;
 using IOBootstrap.NET.Common.Exceptions.Members;
 using IOBootstrap.NET.Common.Utilities;
@@ -48,6 +49,9 @@ public class MemberLoginViewModel : ViewModel
         member.TokenDate = DateTime.UtcNow;
         DBContext.Update(member);
         DBContext.SaveChanges();
+
+        string cacheKey = String.Format(CacheKeys.UserCacheKey, member.ID.ToString());
+        IOCache.InvalidateCache(cacheKey);
 
         string tokenWithUserID = String.Format("{0}-{1}", userToken, member.ID);
         return new AuthenticateResponseModel()
