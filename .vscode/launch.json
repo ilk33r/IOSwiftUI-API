@@ -26,6 +26,27 @@
             }
         },
         {
+            "name": "SwiftUI.Application-IP",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "buildApplication",
+            "program": "${workspaceFolder}/IOSwiftUI/Application/bin/Debug/net6.0/IOSwiftUI.Application.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/IOSwiftUI/Application",
+            "stopAtEntry": false,
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "^\\s*Now listening on:\\s+(https?://\\S+)"
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS": "http://192.168.1.6:5176"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
             "name": ".NET Core Attach",
             "type": "coreclr",
             "request": "attach",
