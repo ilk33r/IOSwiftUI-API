@@ -37,6 +37,12 @@ public class DiscoverViewModel : ViewModel
                                                                 .Take(pagination.Count)
                                                                 .ToList();
 
+        foreach(DiscoverImageModel image in followingImages)
+        {
+            image.PublicId = CreatePublicId(image.PublicId);
+            image.UserProfilePicturePublicId = CreatePublicId(image.UserProfilePicturePublicId);
+        }
+
         responsePagination.Count = followingImages.Count();
         return new DiscoverImagesResponseModel(followingImages, responsePagination);
     }
