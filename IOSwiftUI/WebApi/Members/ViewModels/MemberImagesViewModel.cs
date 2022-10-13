@@ -63,7 +63,7 @@ public class MemberImagesViewModel : ImageViewModel
         DBContext.SaveChanges();
     }
 
-    public MemberImagesResponseModel MemberImages(PaginationModel pagination)
+    public MemberImagesResponseModel GetCurrentMemberImages(PaginationModel pagination)
     {
         PaginationModel responsePagination = new PaginationModel();
         responsePagination.Start = pagination.Start;
@@ -88,6 +88,39 @@ public class MemberImagesViewModel : ImageViewModel
         foreach(MemberImageModel image in memberImages)
         {
             image.PublicId = CreatePublicId(image.PublicId);
+        }
+
+        responsePagination.Count = memberImages.Count();
+        return new MemberImagesResponseModel(memberImages, responsePagination);
+    }
+
+    public MemberImagesResponseModel GetOtherMemberImages(PaginationModel pagination, string userName)
+    {
+        PaginationModel responsePagination = new PaginationModel();
+        responsePagination.Start = pagination.Start;
+        responsePagination.Total = DBContext.MemberImages
+                                                .Where(i => i.Member.UserName.ToLower().Equals(userName))
+                                                .Count();
+
+        List<MemberImageModel> memberImages = DBContext.MemberImages
+                                                            .Select(i => new MemberImageModel()
+                                                            {
+                                                                ImageId = i.ID,
+                                                                MemberId = i.Member.ID,
+                                                                PublicId = i.FileName,
+                                                                UserName = i.Member.UserName,
+                                                                CreateDate = i.CreateDate
+                                                            })
+                                                            .Where(i => i.UserName.ToLower().Equals(userName))
+                                                            .OrderByDescending(i => i.CreateDate)
+                                                            .Skip(pagination.Start)
+                                                            .Take(pagination.Count)
+                                                            .ToList();
+
+        foreach(MemberImageModel image in memberImages)
+        {
+            image.PublicId = CreatePublicId(image.PublicId);
+            image.UserName = null;
         }
 
         responsePagination.Count = memberImages.Count();

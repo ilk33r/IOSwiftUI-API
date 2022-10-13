@@ -59,8 +59,15 @@ public class MemberImagesController : Controller<MemberImagesViewModel>
     [IORequireHTTPS]
     [IOUserRole(UserRoles.User)]
     [HttpPost("[action]")]
-    public MemberImagesResponseModel GetImages([FromBody] PaginationRequestModel requestModel)
+    public MemberImagesResponseModel GetImages([FromBody] MemberImagesRequestModel requestModel)
     {
-        return ViewModel.MemberImages(requestModel.Pagination);
+        if (String.IsNullOrEmpty(requestModel.UserName))
+        {
+            return ViewModel.GetCurrentMemberImages(requestModel.Pagination);
+        }
+        else
+        {
+            return ViewModel.GetOtherMemberImages(requestModel.Pagination, requestModel.UserName);
+        }
     }
 }
