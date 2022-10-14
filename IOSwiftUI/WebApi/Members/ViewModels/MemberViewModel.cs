@@ -12,6 +12,7 @@ public class MemberViewModel : ViewModel
     public MemberModel GetCurrentMember()
     {
         MemberModel currentMember = IOSerializableUtilities.Copy(CurrentMember);;
+        currentMember.IsFollowing = false;
         return currentMember;
     }
 
@@ -40,6 +41,18 @@ public class MemberViewModel : ViewModel
         else 
         {
             member.ProfilePicturePublicId = CreatePublicId(member.ProfilePicturePublicId);
+
+            MemberFollowingModel followingMember = CurrentMember.Followings
+                                                                .Where(mf => mf.FollowingMemberID == member.ID)
+                                                                .FirstOrDefault();
+            if (followingMember == null)
+            {
+                member.IsFollowing = false;
+            }
+            else
+            {
+                member.IsFollowing = true;
+            }
         }
 
         return member;
