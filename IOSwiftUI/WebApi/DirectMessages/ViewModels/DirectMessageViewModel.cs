@@ -4,6 +4,8 @@ using System.Linq;
 using IOBootstrap.NET.Common.Exceptions.Members;
 using IOSwiftUI.Common.Constants;
 using IOSwiftUI.Common.Exceptions;
+using IOSwiftUI.Common.Messages.DirectMessages;
+using IOSwiftUI.Common.Models.Base;
 using IOSwiftUI.Common.Models.DirectMessages;
 using IOSwiftUI.Core.ViewModels;
 using IOSwiftUI.DataAccess.Entities;
@@ -181,6 +183,37 @@ public class DirectMessageViewModel : ViewModel
 
         DBContext.Remove(inbox);
         DBContext.SaveChanges();
+    }
+
+    public GetMessagesResponseModel GetMessages(PaginationModel pagination, int inboxID)
+    {
+        PaginationModel responsePagination = new PaginationModel();
+        responsePagination.Start = pagination.Start;
+        responsePagination.Total = DBContext.DirectMessages
+                                                .Where(dm => dm.InboxID == inboxID)
+                                                .Count();
+
+        List<MessageModel> memberMessages = DBContext.DirectMessages
+                                                        .Select(dm => new MessageModel()
+                                                        {
+                                                            InboxID = dm.InboxID,
+                                                            MessageID = dm.ID,
+                                                            Message = dm.Message,
+                                                            MessageDate = dm.MessageDate
+                                                        })
+                                                        .Where(dm => dm.InboxID == inboxID)
+                                                        .OrderByDescending(dm => dm.MessageDate)
+                                                        .Skip(pagination.Start)
+                                                        .Take(pagination.Count)
+                                                        .ToList();
+
+        foreach(MessageModel message in memberMessages)
+        {
+            message.Message = EncryptString(message.Message);
+        }
+
+        responsePagination.Count = memberMessages.Count();
+        return new GetMessagesResponseModel(memberMessages, responsePagination);
     }
 
     private InboxEntity CreateConversation(MemberEntity fromMember, MemberEntity toMember)

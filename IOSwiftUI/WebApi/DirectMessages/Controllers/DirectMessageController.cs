@@ -67,4 +67,13 @@ public class DirectMessageController : Controller<DirectMessageViewModel>
         ViewModel.DeleteInbox(inboxID ?? 0);
         return new ResponseModel();
     }
+
+    [IORequireHTTPS]
+    [IOValidateRequestModel]
+    [IOUserRole(UserRoles.User)]
+    [HttpPost("[action]")]
+    public GetMessagesResponseModel GetMessages([FromBody] GetMessagesRequestModel requestModel)
+    {
+        return ViewModel.GetMessages(requestModel.Pagination, requestModel.InboxID);
+    }
 }

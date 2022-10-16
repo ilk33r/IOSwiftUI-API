@@ -5,6 +5,8 @@ namespace IOSwiftUI.Common.Models.DirectMessages;
 
 public class MessageModel : Model
 {
+    public int? InboxID { get; set; }
+
     public int MessageID { get; set; }
 
     public string Message { get; set; }
