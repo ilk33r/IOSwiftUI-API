@@ -10,6 +10,7 @@ using IOSwiftUI.Common.Models.DirectMessages;
 using IOSwiftUI.Core.ViewModels;
 using IOSwiftUI.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Configuration;
 
 namespace IOSwiftUI.WebApi.DirectMessages.ViewModels;
@@ -24,6 +25,7 @@ public class DirectMessageViewModel : ViewModel
                                             {
                                                 InboxID = i.ID,
                                                 FromMemberID = i.FromMember.ID,
+                                                ToMemberID = i.ToMember.ID,
                                                 UserName = i.ToMember.UserName,
                                                 NameSurname = i.ToMember.Name + " " + i.ToMember.Surname,
                                                 ProfilePicturePublicID = i.ToMember.ProfilePictureFileName,
@@ -205,7 +207,7 @@ public class DirectMessageViewModel : ViewModel
                                                             UserAvatarPublicID = dm.FromMember.ID == currentMemberID ? dm.FromMember.ProfilePictureFileName : dm.ToMember.ProfilePictureFileName
                                                         })
                                                         .Where(dm => dm.InboxID == inboxID)
-                                                        .OrderByDescending(dm => dm.MessageDate)
+                                                        .OrderBy(dm => dm.MessageDate)
                                                         .Skip(pagination.Start)
                                                         .Take(pagination.Count)
                                                         .ToList();
@@ -243,8 +245,18 @@ public class DirectMessageViewModel : ViewModel
             UnreadMessageCount = 0
         };
 
-        DBContext.Entry(fromMember).State = EntityState.Unchanged;
-        DBContext.Entry(toMember).State = EntityState.Unchanged;
+        EntityEntry<MemberEntity> fromMemberEntity = DBContext.Entry(fromMember);
+        EntityEntry<MemberEntity> toMemberEntity = DBContext.Entry(toMember);
+
+        if (fromMemberEntity.State != EntityState.Unchanged)
+        {
+            fromMemberEntity.State = EntityState.Unchanged;
+        }
+
+        if (toMemberEntity.State != EntityState.Unchanged)
+        {
+            toMemberEntity.State = EntityState.Unchanged;
+        }
 
         DBContext.Add(inbox);
         DBContext.SaveChanges();

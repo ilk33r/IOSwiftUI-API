@@ -11,6 +11,8 @@ public class InboxModel : Model
     [JsonIgnore]
     public int? FromMemberID { get; set; }
 
+    public int? ToMemberID { get; set; }
+
     public string UserName { get; set; }
 
     public string NameSurname { get; set; }
