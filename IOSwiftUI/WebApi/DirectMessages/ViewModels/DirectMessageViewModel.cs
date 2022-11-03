@@ -193,13 +193,16 @@ public class DirectMessageViewModel : ViewModel
                                                 .Where(dm => dm.InboxID == inboxID)
                                                 .Count();
 
+        int currentMemberID = CurrentMember.ID;
         List<MessageModel> memberMessages = DBContext.DirectMessages
                                                         .Select(dm => new MessageModel()
                                                         {
                                                             InboxID = dm.InboxID,
                                                             MessageID = dm.ID,
                                                             Message = dm.Message,
-                                                            MessageDate = dm.MessageDate
+                                                            MessageDate = dm.MessageDate,
+                                                            IsSent = dm.FromMember.ID == currentMemberID,
+                                                            UserAvatarPublicID = dm.FromMember.ID == currentMemberID ? dm.FromMember.ProfilePictureFileName : dm.ToMember.ProfilePictureFileName
                                                         })
                                                         .Where(dm => dm.InboxID == inboxID)
                                                         .OrderByDescending(dm => dm.MessageDate)
@@ -210,6 +213,10 @@ public class DirectMessageViewModel : ViewModel
         foreach(MessageModel message in memberMessages)
         {
             message.Message = EncryptString(message.Message);
+            if (!String.IsNullOrEmpty(message.UserAvatarPublicID))
+            {
+                message.UserAvatarPublicID = CreatePublicId(message.UserAvatarPublicID);
+            }
         }
 
         responsePagination.Count = memberMessages.Count();

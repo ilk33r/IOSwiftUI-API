@@ -12,4 +12,8 @@ public class MessageModel : Model
     public string Message { get; set; }
 
     public DateTimeOffset MessageDate { get; set; }
+
+    public bool? IsSent { get; set; }
+
+    public string UserAvatarPublicID { get; set; }
 }
