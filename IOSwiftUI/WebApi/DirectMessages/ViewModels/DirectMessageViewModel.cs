@@ -147,8 +147,8 @@ public class DirectMessageViewModel : ViewModel
         MessageEntity toMemberMessage = new MessageEntity()
         {
             InboxID = toMemberConversation.ID,
-            FromMember = toMember,
-            ToMember = fromMember,
+            FromMember = fromMember,
+            ToMember = toMember,
             Message = decryptedMessage,
             MessageDate = DateTimeOffset.UtcNow
         };
@@ -207,7 +207,7 @@ public class DirectMessageViewModel : ViewModel
                                                             UserAvatarPublicID = dm.FromMember.ID == currentMemberID ? dm.FromMember.ProfilePictureFileName : dm.ToMember.ProfilePictureFileName
                                                         })
                                                         .Where(dm => dm.InboxID == inboxID)
-                                                        .OrderBy(dm => dm.MessageDate)
+                                                        .OrderByDescending(dm => dm.MessageDate)
                                                         .Skip(pagination.Start)
                                                         .Take(pagination.Count)
                                                         .ToList();
@@ -222,6 +222,7 @@ public class DirectMessageViewModel : ViewModel
         }
 
         responsePagination.Count = memberMessages.Count();
+        memberMessages.Reverse();
         return new GetMessagesResponseModel(memberMessages, responsePagination);
     }
 
