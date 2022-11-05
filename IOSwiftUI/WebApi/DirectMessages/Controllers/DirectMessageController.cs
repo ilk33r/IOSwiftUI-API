@@ -48,10 +48,14 @@ public class DirectMessageController : Controller<DirectMessageViewModel>
     [IOValidateRequestModel]
     [IOUserRole(UserRoles.User)]
     [HttpPut("[action]")]
-    public ResponseModel SendMessage([FromBody] SendMessageRequestModel requestModel)
+    public GetMessagesResponseModel SendMessage([FromBody] SendMessageRequestModel requestModel)
     {
-        ViewModel.SendMessage(requestModel.ToMemberID, requestModel.EncryptedMessage);
-        return new ResponseModel();
+        MessageModel message = ViewModel.SendMessage(requestModel.ToMemberID, requestModel.EncryptedMessage);
+        
+        List<MessageModel> messages = new List<MessageModel>();
+        messages.Add(message);
+
+        return new GetMessagesResponseModel(messages, null);
     }
 
     [IORequireHTTPS]

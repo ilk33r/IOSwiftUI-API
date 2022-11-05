@@ -100,7 +100,7 @@ public class DirectMessageViewModel : ViewModel
         return response;
     }
 
-    public void SendMessage(int toMemberID, string message)
+    public MessageModel SendMessage(int toMemberID, string message)
     {
         MemberEntity fromMember = new MemberEntity()
         {
@@ -161,6 +161,19 @@ public class DirectMessageViewModel : ViewModel
         DBContext.Update(toMemberConversation);
 
         DBContext.SaveChanges();
+
+        MessageModel messageModel = new MessageModel()
+        {
+            InboxID = fromMemberConversation.ID,
+            MessageID = fromMemberMessage.ID,
+            MessageDate = fromMemberMessage.MessageDate,
+            IsSent = true
+        };
+
+        messageModel.Message = EncryptString(decryptedMessage);
+        messageModel.UserAvatarPublicID = CurrentMember.ProfilePicturePublicId;
+
+        return messageModel;
     }
 
     public void DeleteInbox(int inboxID)
