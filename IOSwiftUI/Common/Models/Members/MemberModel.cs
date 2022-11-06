@@ -31,6 +31,8 @@ public class MemberModel : Model
 
     public string ProfilePicturePublicId { get; set; }
 
+    public string PhoneNumber { get; set; }
+
     public bool IsFollowing { get; set; }
 
     [JsonIgnore]

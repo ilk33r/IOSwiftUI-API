@@ -67,6 +67,7 @@ public class ViewModel : IOViewModel
                                             LocationLatitude = m.LocationLatitude,
                                             LocationLongitude = m.LocationLongitude,
                                             ProfilePicturePublicId = m.ProfilePictureFileName,
+                                            PhoneNumber = m.PhoneNumber,
                                             UserStatus = m.UserStatus,
                                             Followings = DBContext.MemberFollowings
                                                                         .Select(mf => new MemberFollowingModel()
