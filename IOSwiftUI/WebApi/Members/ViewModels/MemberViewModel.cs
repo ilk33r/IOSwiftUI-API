@@ -11,7 +11,7 @@ public class MemberViewModel : ViewModel
 {
     public MemberModel GetCurrentMember()
     {
-        MemberModel currentMember = IOSerializableUtilities.Copy(CurrentMember);;
+        MemberModel currentMember = IOSerializableUtilities.Copy(CurrentMember);
         currentMember.IsFollowing = false;
         return currentMember;
     }

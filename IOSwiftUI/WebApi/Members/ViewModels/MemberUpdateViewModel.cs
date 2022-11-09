@@ -52,6 +52,10 @@ public class MemberUpdateViewModel : ViewModel
         member.LocationName = requestModel.LocationName;
         member.LocationLatitude = requestModel.LocationLatitude;
         member.LocationLongitude = requestModel.LocationLongitude;
+        member.PhoneNumber = requestModel.PhoneNumber;
+        member.DeviceId = requestModel.DeviceId;
+        member.DeviceManifacturer = requestModel.DeviceManifacturer;
+        member.DeviceModel = requestModel.DeviceModel;
 
         DBContext.Update(member);
         DBContext.SaveChanges();
