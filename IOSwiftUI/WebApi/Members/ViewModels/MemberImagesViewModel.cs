@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using IOBootstrap.NET.Common.Cache;
 using IOBootstrap.NET.Common.Exceptions.Members;
+using IOSwiftUI.Common.Constants;
 using IOSwiftUI.Common.Exceptions;
 using IOSwiftUI.Common.Messages.Members;
 using IOSwiftUI.Common.Models.Base;
@@ -40,8 +42,22 @@ public class MemberImagesViewModel : ImageViewModel
             throw new ImageNotFoundException();
         }
 
+
+        MemberEntity member = DBContext.Members.Find(CurrentMember.ID);
+        if (member == null)
+        {
+            throw new IOUserNotFoundException();
+        }
+
         string fileName = GetFileName(CurrentMember.ProfilePicturePublicId);
         RemoveFile(fileName);
+
+        member.ProfilePictureFileName = null;
+        DBContext.Update(member);
+        DBContext.SaveChanges();
+
+        string cacheKey = String.Format(CacheKeys.UserCacheKey, CurrentMember.ID);
+        IOCache.InvalidateCache(cacheKey);
     }
 
     public void UpdateMemberProfilePicture(string fileName)
@@ -61,6 +77,9 @@ public class MemberImagesViewModel : ImageViewModel
         member.ProfilePictureFileName = fileName;
         DBContext.Update(member);
         DBContext.SaveChanges();
+
+        string cacheKey = String.Format(CacheKeys.UserCacheKey, CurrentMember.ID);
+        IOCache.InvalidateCache(cacheKey);
     }
 
     public MemberImagesResponseModel GetCurrentMemberImages(PaginationModel pagination)
