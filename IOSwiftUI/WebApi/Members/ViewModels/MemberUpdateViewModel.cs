@@ -46,6 +46,8 @@ public class MemberUpdateViewModel : ViewModel
             throw new IOUserNotFoundException();
         }
 
+        CheckOTPValidated(requestModel.PhoneNumber);
+
         member.BirthDate = requestModel.BirthDate;
         member.Name = requestModel.Name;
         member.Surname = requestModel.Surname;
