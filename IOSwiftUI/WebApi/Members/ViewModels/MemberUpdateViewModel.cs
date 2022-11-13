@@ -26,7 +26,7 @@ public class MemberUpdateViewModel : ViewModel
 
         CheckOTPValidated(member.PhoneNumber);
 
-        if (IOPasswordUtilities.VerifyPassword(decryptedOldPassword, member.Password))
+        if (!IOPasswordUtilities.VerifyPassword(decryptedOldPassword, member.Password))
         {
             throw new IOInvalidCredentialsException();
         }
