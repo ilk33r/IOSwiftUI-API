@@ -37,6 +37,6 @@ public class DiscoverController : Controller<DiscoverViewModel>
     [HttpPost("[action]")]
     public DiscoverImagesResponseModel DiscoverAll([FromBody] PaginationRequestModel requestModel)
     {
-        return ViewModel.DiscoverImages(requestModel.Pagination);
+        return ViewModel.DiscoverAllImages(requestModel.Pagination);
     }
 }
