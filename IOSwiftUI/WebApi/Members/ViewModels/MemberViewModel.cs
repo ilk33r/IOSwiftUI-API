@@ -40,7 +40,10 @@ public class MemberViewModel : ViewModel
         }
         else 
         {
-            member.ProfilePicturePublicId = CreatePublicId(member.ProfilePicturePublicId);
+            if (!String.IsNullOrEmpty(member.ProfilePicturePublicId))
+            {
+                member.ProfilePicturePublicId = CreatePublicId(member.ProfilePicturePublicId);
+            }
 
             MemberFollowingModel followingMember = CurrentMember.Followings
                                                                 .Where(mf => mf.FollowingMemberID == member.ID)
