@@ -64,6 +64,7 @@ public class DiscoverViewModel : ViewModel
                                                                     UserProfilePicturePublicId = i.Member.ProfilePictureFileName,
                                                                     CreateDate = i.CreateDate
                                                                 })
+                                                                .Where(i => i.MemberId != CurrentMember.ID)
                                                                 .OrderByDescending(i => i.CreateDate)
                                                                 .Skip(pagination.Start)
                                                                 .Take(pagination.Count)
