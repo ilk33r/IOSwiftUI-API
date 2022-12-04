@@ -57,12 +57,18 @@ public class MemberFollowingViewModel : ViewModel
 
         foreach (MemberFriendModel item in followings)
         {
-            item.ProfilePicturePublicId = CreatePublicId(item.ProfilePicturePublicId);
+            if (!String.IsNullOrEmpty(item.ProfilePicturePublicId))
+            {
+                item.ProfilePicturePublicId = CreatePublicId(item.ProfilePicturePublicId);
+            }
         }
 
         foreach (MemberFriendModel item in followers)
         {
-            item.ProfilePicturePublicId = CreatePublicId(item.ProfilePicturePublicId);
+            if (!String.IsNullOrEmpty(item.ProfilePicturePublicId))
+            {
+                item.ProfilePicturePublicId = CreatePublicId(item.ProfilePicturePublicId);
+            }
         }
 
         return new MemberFriendsResponseModel() {
