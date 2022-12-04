@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using IOSwiftUI.Common.Messages.Discover;
@@ -40,7 +41,10 @@ public class DiscoverViewModel : ViewModel
         foreach(DiscoverImageModel image in followingImages)
         {
             image.PublicId = CreatePublicId(image.PublicId);
-            image.UserProfilePicturePublicId = CreatePublicId(image.UserProfilePicturePublicId);
+            if (!String.IsNullOrEmpty(image.UserProfilePicturePublicId))
+            {
+                image.UserProfilePicturePublicId = CreatePublicId(image.UserProfilePicturePublicId);
+            }
         }
 
         responsePagination.Count = followingImages.Count();
@@ -73,7 +77,10 @@ public class DiscoverViewModel : ViewModel
         foreach(DiscoverImageModel image in followingImages)
         {
             image.PublicId = CreatePublicId(image.PublicId);
-            image.UserProfilePicturePublicId = CreatePublicId(image.UserProfilePicturePublicId);
+            if (!String.IsNullOrEmpty(image.UserProfilePicturePublicId))
+            {
+                image.UserProfilePicturePublicId = CreatePublicId(image.UserProfilePicturePublicId);
+            }
         }
         
         responsePagination.Count = followingImages.Count();
