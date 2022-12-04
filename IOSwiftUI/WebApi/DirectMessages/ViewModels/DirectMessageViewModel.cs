@@ -217,7 +217,7 @@ public class DirectMessageViewModel : ViewModel
                                                             Message = dm.Message,
                                                             MessageDate = dm.MessageDate,
                                                             IsSent = dm.FromMember.ID == currentMemberID,
-                                                            UserAvatarPublicID = dm.FromMember.ID == currentMemberID ? dm.FromMember.ProfilePictureFileName : dm.ToMember.ProfilePictureFileName
+                                                            UserAvatarPublicID = dm.FromMember.ProfilePictureFileName
                                                         })
                                                         .Where(dm => dm.InboxID == inboxID)
                                                         .OrderByDescending(dm => dm.MessageDate)
