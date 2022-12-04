@@ -23,6 +23,14 @@ public class MemberFollowingController : Controller<MemberFollowingViewModel>
     }
 
     [IORequireHTTPS]
+    [IOUserRole(UserRoles.User)]
+    [HttpGet("[action]")]
+    public MemberFriendsResponseModel GetFriends()
+    {
+        return ViewModel.GetFriends();
+    }
+
+    [IORequireHTTPS]
     [IOValidateRequestModel]
     [IOUserRole(UserRoles.User)]
     [HttpPost("[action]")]
