@@ -1,6 +1,8 @@
 using IOBootstrap.NET.Common.Attributes;
 using IOBootstrap.NET.Common.Enumerations;
+using IOBootstrap.NET.Common.Exceptions.Common;
 using IOBootstrap.NET.Common.Logger;
+using IOBootstrap.NET.Common.Utilities;
 using IOSwiftUI.Common.Messages.Base;
 using IOSwiftUI.Common.Messages.Discover;
 using IOSwiftUI.Core.Controllers;
@@ -38,5 +40,19 @@ public class DiscoverController : Controller<DiscoverViewModel>
     public DiscoverImagesResponseModel DiscoverAll([FromBody] PaginationRequestModel requestModel)
     {
         return ViewModel.DiscoverAllImages(requestModel.Pagination);
+    }
+
+    [IORequireHTTPS]
+    [IOUserRole(UserRoles.User)]
+    [IOValidateRequestModel]
+    [HttpPost("[action]")]
+    public DiscoverImagesResponseModel DiscoverMemberImages([FromBody] DiscoverSearchMemberRequestModel requestModel)
+    {
+        if (IORegexUtility.HasSpecialCharacter(requestModel.UserName))
+        {
+            throw new IOInvalidRequestException();
+        }
+
+        return ViewModel.DiscoverMemberImages(requestModel.UserName, requestModel.Pagination);
     }
 }
