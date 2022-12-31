@@ -7,6 +7,7 @@ namespace IOSwiftUI.DataAccess.Context;
 public class DatabaseContext : IODatabaseContext<DatabaseContext>
 {
     public DbSet<MemberEntity> Members { get; set; }
+    public DbSet<MemberFaceIDEntity> MemberFaceIDs { get; set; }
     public DbSet<MemberFollowingEntity> MemberFollowings { get; set; }
     public DbSet<ImagesEntity> MemberImages { get; set; }
     public DbSet<InboxEntity> Inbox { get; set; }
@@ -22,6 +23,7 @@ public class DatabaseContext : IODatabaseContext<DatabaseContext>
         base.OnModelCreating(modelBuilder);
 
         BuildMemberEntity(modelBuilder);
+        BuildMemberFaceIDsEntity(modelBuilder);
         BuildMemberImagesEntity(modelBuilder);
         BuildMemberFollowingEntity(modelBuilder);
         BuildMemberInboxEntity(modelBuilder);
@@ -44,6 +46,12 @@ public class DatabaseContext : IODatabaseContext<DatabaseContext>
 
         modelBuilder.Entity<MemberEntity>().HasIndex(
                 entity => new { entity.PhoneNumber });
+    }
+
+    private void BuildMemberFaceIDsEntity(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<MemberFaceIDEntity>().HasIndex(
+                entity => new { entity.PairDate });
     }
 
     private void BuildMemberImagesEntity(ModelBuilder modelBuilder)
