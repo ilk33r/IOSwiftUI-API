@@ -33,6 +33,34 @@ public class MemberRegisterViewModel : ViewModel
         }
     }
 
+    public void PairFaceID(string encrypredAuthenticationKey)
+    {
+        string authenticationKey = DecryptString(encrypredAuthenticationKey);
+        
+        MemberFaceIDEntity faceIDEntity = DBContext.MemberFaceIDs.Where(fid => fid.Member.ID == CurrentMember.ID)
+                                                                    .FirstOrDefault();
+
+        if (faceIDEntity == null)
+        {
+            MemberEntity currentMember = DBContext.Members.Find(CurrentMember.ID);
+            faceIDEntity = new MemberFaceIDEntity()
+            {
+                Member = currentMember,
+                AuthenticationKey = authenticationKey,
+                PairDate = DateTimeOffset.UtcNow
+            };
+
+            DBContext.Add(faceIDEntity);
+        }
+        else
+        {
+            faceIDEntity.AuthenticationKey = authenticationKey;
+            DBContext.Update(faceIDEntity);
+        }
+        
+        DBContext.SaveChanges();
+    }
+
     public void RegisterMember(RegisterMemberRequestModel requestModel)
     {
         CheckOTPValidated(requestModel.PhoneNumber);

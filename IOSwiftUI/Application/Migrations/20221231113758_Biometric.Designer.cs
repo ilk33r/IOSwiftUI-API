@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IOSwiftUI.Application.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20221231103238_Biometric")]
+    [Migration("20221231113758_Biometric")]
     partial class Biometric
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -481,7 +481,7 @@ namespace IOSwiftUI.Application.Migrations
                         new
                         {
                             ID = 1,
-                            Password = "$IOPSSWD$V1$10000$fhWCgya+Zow5wNtDmlVVC8tHJqv539jW79eDbVl8bvdXM9tME5HYkkJkl8HbZlsYQKQJQixfzzRXimI6j9yT5L/JkizkXvO8J5qJsRbAuPYIgJsvsaE/F9t7ABI0yEHW",
+                            Password = "$IOPSSWD$V1$10000$SOkE5oCTi5wWVy8kjHltpHUQkc825PSCKDF49eReWdcK/Iq9ZQP3buE3qjJGYkPta+id+IRdoaOUMq+8P0GlTclEqq/djAAUrjnfQj55LYeU9qsld6D5sV7H4MbYlCVK",
                             TokenDate = new DateTimeOffset(new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), new TimeSpan(0, 0, 0, 0, 0)),
                             UserName = "root",
                             UserRole = 0,
@@ -772,8 +772,8 @@ namespace IOSwiftUI.Application.Migrations
 
                     b.Property<string>("AuthenticationKey")
                         .IsRequired()
-                        .HasMaxLength(140)
-                        .HasColumnType("varchar(140)");
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)");
 
                     b.Property<int>("MemberID")
                         .HasColumnType("int");

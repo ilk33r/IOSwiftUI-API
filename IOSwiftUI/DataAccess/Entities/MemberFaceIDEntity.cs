@@ -14,7 +14,7 @@ public class MemberFaceIDEntity
     public MemberEntity Member { get; set; }
 
     [Required]
-    [MaxLength(140)]
+    [MaxLength(256)]
     public string AuthenticationKey { get; set; }
 
     [Required]

@@ -57,6 +57,16 @@ public class MemberRegisterController : Controller<MemberRegisterViewModel>
 
     [IOValidateRequestModel]
     [IORequireHTTPS]
+    [IOUserRole(UserRoles.User)]
+    [HttpPost("[action]")]
+    public ResponseModel PairFaceID([FromBody] MemberPairFaceIDRequestModel requestModel)
+    {
+        ViewModel.PairFaceID(requestModel.AuthenticationKey);
+        return new ResponseModel();
+    }
+
+    [IOValidateRequestModel]
+    [IORequireHTTPS]
     [IOUserRole(UserRoles.AnonmyMouse)]
     [HttpPut("[action]")]
     public ResponseModel Register([FromBody] RegisterMemberRequestModel requestModel)
