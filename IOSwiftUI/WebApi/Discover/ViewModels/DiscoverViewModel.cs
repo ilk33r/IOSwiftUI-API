@@ -18,11 +18,11 @@ public class DiscoverViewModel : ViewModel
 
         PaginationModel responsePagination = new PaginationModel();
         responsePagination.Start = pagination.Start;
-        responsePagination.Total = DBContext.MemberImages
+        responsePagination.Total = DatabaseContext.MemberImages
                                                 .Where(i => followingIds.Contains(i.Member.ID))
                                                 .Count();
 
-        IList<DiscoverImageModel> followingImages = DBContext.MemberImages
+        IList<DiscoverImageModel> followingImages = DatabaseContext.MemberImages
                                                                 .Select(i => new DiscoverImageModel()
                                                                 {
                                                                     MemberId = i.Member.ID,
@@ -55,11 +55,11 @@ public class DiscoverViewModel : ViewModel
     {
         PaginationModel responsePagination = new PaginationModel();
         responsePagination.Start = pagination.Start;
-        responsePagination.Total = DBContext.MemberImages
+        responsePagination.Total = DatabaseContext.MemberImages
                                                 .Where(i => i.Member.ID != CurrentMember.ID)
                                                 .Count();
 
-        IList<DiscoverImageModel> followingImages = DBContext.MemberImages
+        IList<DiscoverImageModel> followingImages = DatabaseContext.MemberImages
                                                                 .Select(i => new DiscoverImageModel()
                                                                 {
                                                                     MemberId = i.Member.ID,
@@ -92,11 +92,11 @@ public class DiscoverViewModel : ViewModel
     {
         PaginationModel responsePagination = new PaginationModel();
         responsePagination.Start = pagination.Start;
-        responsePagination.Total = DBContext.MemberImages
+        responsePagination.Total = DatabaseContext.MemberImages
                                                 .Where(i => i.Member.UserName.ToLower().Contains(userName))
                                                 .Count();
 
-        IList<DiscoverImageModel> memberImages = DBContext.MemberImages
+        IList<DiscoverImageModel> memberImages = DatabaseContext.MemberImages
                                                             .Select(i => new DiscoverImageModel()
                                                             {
                                                                 MemberId = i.Member.ID,

@@ -21,7 +21,7 @@ public class MemberFollowingViewModel : ViewModel
                                             .Select(f => f.FollowingMemberID)
                                             .ToArray();
 
-        List<MemberFriendModel> followings = DBContext.MemberFollowings
+        List<MemberFriendModel> followings = DatabaseContext.MemberFollowings
                                                 .Select(mf => new MemberFriendModel()
                                                 {
                                                     ID = mf.FollowingMember.ID,
@@ -38,7 +38,7 @@ public class MemberFollowingViewModel : ViewModel
                                                 .OrderByDescending(mf => mf.FollowDate)
                                                 .ToList();
 
-        List<MemberFriendModel> followers = DBContext.MemberFollowings
+        List<MemberFriendModel> followers = DatabaseContext.MemberFollowings
                                                 .Select(mf => new MemberFriendModel()
                                                 {
                                                     ID = mf.Member.ID,
@@ -103,8 +103,8 @@ public class MemberFollowingViewModel : ViewModel
             ID = memberId
         };
 
-        DBContext.Attach(memberEntity);
-        DBContext.Attach(followingMemberEntity);
+        DatabaseContext.Attach(memberEntity);
+        DatabaseContext.Attach(followingMemberEntity);
         
         MemberFollowingEntity following = new MemberFollowingEntity()
         {
@@ -113,8 +113,8 @@ public class MemberFollowingViewModel : ViewModel
             FollowingMember = followingMemberEntity
         };
 
-        DBContext.Add(following);
-        DBContext.SaveChanges();
+        DatabaseContext.Add(following);
+        DatabaseContext.SaveChanges();
 
         string cacheKey = String.Format(CacheKeys.UserCacheKey, CurrentMember.ID);
         IOCache.InvalidateCache(cacheKey);
@@ -131,7 +131,7 @@ public class MemberFollowingViewModel : ViewModel
             throw new MemberNotFollowingException();
         }
 
-        MemberFollowingEntity followingMemberEntity = DBContext.MemberFollowings
+        MemberFollowingEntity followingMemberEntity = DatabaseContext.MemberFollowings
                                                                 .Where(mf => mf.Member.ID == CurrentMember.ID && mf.FollowingMember.ID == memberId)
                                                                 .FirstOrDefault();
 
@@ -140,8 +140,8 @@ public class MemberFollowingViewModel : ViewModel
             throw new IOUserNotFoundException();
         }
 
-        DBContext.Remove(followingMemberEntity);
-        DBContext.SaveChanges();
+        DatabaseContext.Remove(followingMemberEntity);
+        DatabaseContext.SaveChanges();
 
         string cacheKey = String.Format(CacheKeys.UserCacheKey, CurrentMember.ID);
         IOCache.InvalidateCache(cacheKey);

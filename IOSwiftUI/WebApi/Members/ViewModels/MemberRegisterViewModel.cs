@@ -13,7 +13,7 @@ public class MemberRegisterViewModel : ViewModel
 {
     public void CheckMember(string email)
     {
-        MemberEntity member = DBContext.Members.Where(m => m.Email.ToLower().Equals(email.ToLower()))
+        MemberEntity member = DatabaseContext.Members.Where(m => m.Email.ToLower().Equals(email.ToLower()))
                                 .FirstOrDefault();
 
         if (member != null)
@@ -24,7 +24,7 @@ public class MemberRegisterViewModel : ViewModel
 
     public void CheckMemberUserName(string userName)
     {
-        MemberEntity member = DBContext.Members.Where(m => m.UserName.ToLower().Equals(userName.ToLower()))
+        MemberEntity member = DatabaseContext.Members.Where(m => m.UserName.ToLower().Equals(userName.ToLower()))
                                 .FirstOrDefault();
 
         if (member != null)
@@ -37,12 +37,12 @@ public class MemberRegisterViewModel : ViewModel
     {
         string authenticationKey = DecryptString(encrypredAuthenticationKey);
         
-        MemberFaceIDEntity faceIDEntity = DBContext.MemberFaceIDs.Where(fid => fid.Member.ID == CurrentMember.ID)
+        MemberFaceIDEntity faceIDEntity = DatabaseContext.MemberFaceIDs.Where(fid => fid.Member.ID == CurrentMember.ID)
                                                                     .FirstOrDefault();
 
         if (faceIDEntity == null)
         {
-            MemberEntity currentMember = DBContext.Members.Find(CurrentMember.ID);
+            MemberEntity currentMember = DatabaseContext.Members.Find(CurrentMember.ID);
             faceIDEntity = new MemberFaceIDEntity()
             {
                 Member = currentMember,
@@ -50,15 +50,15 @@ public class MemberRegisterViewModel : ViewModel
                 PairDate = DateTimeOffset.UtcNow
             };
 
-            DBContext.Add(faceIDEntity);
+            DatabaseContext.Add(faceIDEntity);
         }
         else
         {
             faceIDEntity.AuthenticationKey = authenticationKey;
-            DBContext.Update(faceIDEntity);
+            DatabaseContext.Update(faceIDEntity);
         }
         
-        DBContext.SaveChanges();
+        DatabaseContext.SaveChanges();
     }
 
     public void RegisterMember(RegisterMemberRequestModel requestModel)
@@ -88,7 +88,7 @@ public class MemberRegisterViewModel : ViewModel
             DeviceModel = requestModel.DeviceModel
         };
 
-        DBContext.Members.Add(newMember);
-        DBContext.SaveChanges();
+        DatabaseContext.Members.Add(newMember);
+        DatabaseContext.SaveChanges();
     }
 }

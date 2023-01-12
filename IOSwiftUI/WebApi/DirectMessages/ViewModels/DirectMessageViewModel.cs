@@ -20,7 +20,7 @@ public class DirectMessageViewModel : ViewModel
 
     public IList<InboxModel> GetInboxes()
     {
-        List<InboxModel> inboxes = DBContext.Inbox
+        List<InboxModel> inboxes = DatabaseContext.Inbox
                                             .Select(i => new InboxModel()
                                             {
                                                 InboxID = i.ID,
@@ -62,7 +62,7 @@ public class DirectMessageViewModel : ViewModel
 
     public InboxModel CreateConversation(int toMemberID)
     {
-        MemberEntity toMember = DBContext.Members
+        MemberEntity toMember = DatabaseContext.Members
                                             .Select(member => new MemberEntity() 
                                             { 
                                                 ID = member.ID,
@@ -84,7 +84,7 @@ public class DirectMessageViewModel : ViewModel
             ID = CurrentMember.ID
         };
             
-        DBContext.Attach(fromMember);
+        DatabaseContext.Attach(fromMember);
         InboxEntity inbox = CreateConversation(fromMember, toMember);
             
         InboxModel response = new InboxModel()
@@ -112,8 +112,8 @@ public class DirectMessageViewModel : ViewModel
             ID = toMemberID
         };
 
-        DBContext.Attach(fromMember);
-        DBContext.Attach(toMember);
+        DatabaseContext.Attach(fromMember);
+        DatabaseContext.Attach(toMember);
 
         InboxEntity fromMemberConversation = CreateConversation(fromMember, toMember);
         InboxEntity toMemberConversation = CreateConversation(toMember, fromMember);
@@ -137,12 +137,12 @@ public class DirectMessageViewModel : ViewModel
             MessageDate = DateTimeOffset.UtcNow
         };
 
-        DBContext.Add(fromMemberMessage);
+        DatabaseContext.Add(fromMemberMessage);
 
         fromMemberConversation.UnreadMessageCount = 0;
         fromMemberConversation.LastMessage = fromMemberMessage;
         fromMemberConversation.UpdateDate = fromMemberMessage.MessageDate;
-        DBContext.Update(fromMemberConversation);
+        DatabaseContext.Update(fromMemberConversation);
 
         MessageEntity toMemberMessage = new MessageEntity()
         {
@@ -153,14 +153,14 @@ public class DirectMessageViewModel : ViewModel
             MessageDate = DateTimeOffset.UtcNow
         };
 
-        DBContext.Add(toMemberMessage);
+        DatabaseContext.Add(toMemberMessage);
 
         toMemberConversation.UnreadMessageCount += 1;
         toMemberConversation.LastMessage = toMemberMessage;
         toMemberConversation.UpdateDate = toMemberMessage.MessageDate;
-        DBContext.Update(toMemberConversation);
+        DatabaseContext.Update(toMemberConversation);
 
-        DBContext.SaveChanges();
+        DatabaseContext.SaveChanges();
 
         MessageModel messageModel = new MessageModel()
         {
@@ -178,7 +178,7 @@ public class DirectMessageViewModel : ViewModel
 
     public void DeleteInbox(int inboxID)
     {
-        InboxEntity inbox = DBContext.Inbox
+        InboxEntity inbox = DatabaseContext.Inbox
                                         .Include(i => i.Messages)
                                         .Where(i => i.ID == inboxID)
                                         .FirstOrDefault();
@@ -189,27 +189,27 @@ public class DirectMessageViewModel : ViewModel
         }
 
         inbox.LastMessage = null;
-        DBContext.SaveChanges();
+        DatabaseContext.SaveChanges();
         
         foreach (MessageEntity message in inbox.Messages)
         {
-            DBContext.Remove(message);
+            DatabaseContext.Remove(message);
         }
 
-        DBContext.Remove(inbox);
-        DBContext.SaveChanges();
+        DatabaseContext.Remove(inbox);
+        DatabaseContext.SaveChanges();
     }
 
     public GetMessagesResponseModel GetMessages(PaginationModel pagination, int inboxID)
     {
         PaginationModel responsePagination = new PaginationModel();
         responsePagination.Start = pagination.Start;
-        responsePagination.Total = DBContext.DirectMessages
+        responsePagination.Total = DatabaseContext.DirectMessages
                                                 .Where(dm => dm.InboxID == inboxID)
                                                 .Count();
 
         int currentMemberID = CurrentMember.ID;
-        List<MessageModel> memberMessages = DBContext.DirectMessages
+        List<MessageModel> memberMessages = DatabaseContext.DirectMessages
                                                         .Select(dm => new MessageModel()
                                                         {
                                                             InboxID = dm.InboxID,
@@ -241,7 +241,7 @@ public class DirectMessageViewModel : ViewModel
 
     private InboxEntity CreateConversation(MemberEntity fromMember, MemberEntity toMember)
     {
-        InboxEntity inbox = DBContext.Inbox
+        InboxEntity inbox = DatabaseContext.Inbox
                                         .Where(i => i.FromMember.ID == fromMember.ID && i.ToMember.ID == toMember.ID)
                                         .FirstOrDefault();
 
@@ -259,8 +259,8 @@ public class DirectMessageViewModel : ViewModel
             UnreadMessageCount = 0
         };
 
-        EntityEntry<MemberEntity> fromMemberEntity = DBContext.Entry(fromMember);
-        EntityEntry<MemberEntity> toMemberEntity = DBContext.Entry(toMember);
+        EntityEntry<MemberEntity> fromMemberEntity = DatabaseContext.Entry(fromMember);
+        EntityEntry<MemberEntity> toMemberEntity = DatabaseContext.Entry(toMember);
 
         if (fromMemberEntity.State != EntityState.Unchanged)
         {
@@ -272,8 +272,8 @@ public class DirectMessageViewModel : ViewModel
             toMemberEntity.State = EntityState.Unchanged;
         }
 
-        DBContext.Add(inbox);
-        DBContext.SaveChanges();
+        DatabaseContext.Add(inbox);
+        DatabaseContext.SaveChanges();
             
         return inbox;
     }

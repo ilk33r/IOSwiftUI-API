@@ -26,7 +26,7 @@ public class MemberLoginViewModel : ViewModel
         {
             descryptedPassword = requestModel.Password;
         }
-        MemberEntity member = DBContext.Members.Where(m => m.Email.ToLower().Equals(requestModel.Email.ToLower()))
+        MemberEntity member = DatabaseContext.Members.Where(m => m.Email.ToLower().Equals(requestModel.Email.ToLower()))
                                         .FirstOrDefault();
         if (member == null)
         {
@@ -47,8 +47,8 @@ public class MemberLoginViewModel : ViewModel
 
         member.UserToken = userToken;
         member.TokenDate = DateTime.UtcNow;
-        DBContext.Update(member);
-        DBContext.SaveChanges();
+        DatabaseContext.Update(member);
+        DatabaseContext.SaveChanges();
 
         string cacheKey = String.Format(CacheKeys.UserCacheKey, member.ID.ToString());
         IOCache.InvalidateCache(cacheKey);

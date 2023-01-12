@@ -22,7 +22,7 @@ public class MemberImagesViewModel : ImageViewModel
         {
             ID = CurrentMember.ID
         };
-        DBContext.Attach(member);
+        DatabaseContext.Attach(member);
 
         ImagesEntity memberImage = new ImagesEntity()
         {
@@ -31,8 +31,8 @@ public class MemberImagesViewModel : ImageViewModel
             Member = member
         };
 
-        DBContext.Add(memberImage);
-        DBContext.SaveChanges();
+        DatabaseContext.Add(memberImage);
+        DatabaseContext.SaveChanges();
     }
 
     public void DeleteProfilePicture()
@@ -43,7 +43,7 @@ public class MemberImagesViewModel : ImageViewModel
         }
 
 
-        MemberEntity member = DBContext.Members.Find(CurrentMember.ID);
+        MemberEntity member = DatabaseContext.Members.Find(CurrentMember.ID);
         if (member == null)
         {
             throw new IOUserNotFoundException();
@@ -53,8 +53,8 @@ public class MemberImagesViewModel : ImageViewModel
         RemoveFile(fileName);
 
         member.ProfilePictureFileName = null;
-        DBContext.Update(member);
-        DBContext.SaveChanges();
+        DatabaseContext.Update(member);
+        DatabaseContext.SaveChanges();
 
         string cacheKey = String.Format(CacheKeys.UserCacheKey, CurrentMember.ID);
         IOCache.InvalidateCache(cacheKey);
@@ -67,7 +67,7 @@ public class MemberImagesViewModel : ImageViewModel
             throw new MemberHasProfilePictureException();
         }
 
-        MemberEntity member = DBContext.Members.Find(CurrentMember.ID);
+        MemberEntity member = DatabaseContext.Members.Find(CurrentMember.ID);
         if (member == null)
         {
             RemoveFile(fileName);
@@ -75,8 +75,8 @@ public class MemberImagesViewModel : ImageViewModel
         }
 
         member.ProfilePictureFileName = fileName;
-        DBContext.Update(member);
-        DBContext.SaveChanges();
+        DatabaseContext.Update(member);
+        DatabaseContext.SaveChanges();
 
         string cacheKey = String.Format(CacheKeys.UserCacheKey, CurrentMember.ID);
         IOCache.InvalidateCache(cacheKey);
@@ -86,11 +86,11 @@ public class MemberImagesViewModel : ImageViewModel
     {
         PaginationModel responsePagination = new PaginationModel();
         responsePagination.Start = pagination.Start;
-        responsePagination.Total = DBContext.MemberImages
+        responsePagination.Total = DatabaseContext.MemberImages
                                                 .Where(i => i.Member.ID == CurrentMember.ID)
                                                 .Count();
 
-        List<MemberImageModel> memberImages = DBContext.MemberImages
+        List<MemberImageModel> memberImages = DatabaseContext.MemberImages
                                                             .Select(i => new MemberImageModel()
                                                             {
                                                                 ImageId = i.ID,
@@ -117,11 +117,11 @@ public class MemberImagesViewModel : ImageViewModel
     {
         PaginationModel responsePagination = new PaginationModel();
         responsePagination.Start = pagination.Start;
-        responsePagination.Total = DBContext.MemberImages
+        responsePagination.Total = DatabaseContext.MemberImages
                                                 .Where(i => i.Member.UserName.ToLower().Equals(userName))
                                                 .Count();
 
-        List<MemberImageModel> memberImages = DBContext.MemberImages
+        List<MemberImageModel> memberImages = DatabaseContext.MemberImages
                                                             .Select(i => new MemberImageModel()
                                                             {
                                                                 ImageId = i.ID,

@@ -15,7 +15,7 @@ public class OTPViewModel : ViewModel
     {
         int otpTimeout = Configuration.GetValue<int>(ConfigurationConstants.OTPTimeout);
         
-        OneTimeCodeEntity otpEntity = DBContext.OneTimeCodes.Where(otp => otp.PhoneNumber.Equals(phoneNumber))
+        OneTimeCodeEntity otpEntity = DatabaseContext.OneTimeCodes.Where(otp => otp.PhoneNumber.Equals(phoneNumber))
                                                 .FirstOrDefault();
 
         if (otpEntity == null)
@@ -28,8 +28,8 @@ public class OTPViewModel : ViewModel
                 IsValidated = false
             };
 
-            DBContext.Add(otpEntity);
-            DBContext.SaveChanges();
+            DatabaseContext.Add(otpEntity);
+            DatabaseContext.SaveChanges();
 
             return otpTimeout;
         }
@@ -52,15 +52,15 @@ public class OTPViewModel : ViewModel
         otpEntity.ValidateDate = null;
         otpEntity.IsValidated = false;
         otpEntity.OneTimeCode = IORandomUtilities.GenerateRandomNumericString(6);
-        DBContext.Update(otpEntity);
-        DBContext.SaveChanges();
+        DatabaseContext.Update(otpEntity);
+        DatabaseContext.SaveChanges();
 
         return otpTimeout;
     }
 
     public void Verify(string phoneNumber, string otp)
     {
-        OneTimeCodeEntity otpEntity = DBContext.OneTimeCodes.Where(otp => otp.PhoneNumber.Equals(phoneNumber))
+        OneTimeCodeEntity otpEntity = DatabaseContext.OneTimeCodes.Where(otp => otp.PhoneNumber.Equals(phoneNumber))
                                                 .FirstOrDefault();
 
         if (otpEntity == null)
@@ -80,8 +80,8 @@ public class OTPViewModel : ViewModel
         {
             otpEntity.ValidateDate = DateTimeOffset.UtcNow;
             otpEntity.IsValidated = true;
-            DBContext.Update(otpEntity);
-            DBContext.SaveChanges();
+            DatabaseContext.Update(otpEntity);
+            DatabaseContext.SaveChanges();
             return;
         }
 

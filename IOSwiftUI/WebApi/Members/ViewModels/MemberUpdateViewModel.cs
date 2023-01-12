@@ -16,7 +16,7 @@ public class MemberUpdateViewModel : ViewModel
         string decryptedOldPassword = DecryptString(oldPassword);
         string decryptedNewPassword = DecryptString(newPassword);
 
-        MemberEntity member = DBContext.Members
+        MemberEntity member = DatabaseContext.Members
                                         .Find(CurrentMember.ID);
 
         if (member == null)
@@ -32,13 +32,13 @@ public class MemberUpdateViewModel : ViewModel
         }
 
         member.Password = IOPasswordUtilities.HashPassword(decryptedNewPassword);
-        DBContext.Update(member);
-        DBContext.SaveChanges();
+        DatabaseContext.Update(member);
+        DatabaseContext.SaveChanges();
     }
 
     public void UpdateMember(RegisterMemberRequestModel requestModel)
     {
-        MemberEntity member = DBContext.Members
+        MemberEntity member = DatabaseContext.Members
                                         .Find(CurrentMember.ID);
 
         if (member == null)
@@ -59,8 +59,8 @@ public class MemberUpdateViewModel : ViewModel
         member.DeviceManifacturer = requestModel.DeviceManifacturer;
         member.DeviceModel = requestModel.DeviceModel;
 
-        DBContext.Update(member);
-        DBContext.SaveChanges();
+        DatabaseContext.Update(member);
+        DatabaseContext.SaveChanges();
 
         string cacheKey = String.Format(CacheKeys.UserCacheKey, CurrentMember.ID);
         IOCache.InvalidateCache(cacheKey);

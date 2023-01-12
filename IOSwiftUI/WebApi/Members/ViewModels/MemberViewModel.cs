@@ -18,7 +18,7 @@ public class MemberViewModel : ViewModel
 
     public MemberModel GetMemberByName(string userName)
     {
-        MemberModel member = DBContext.Members
+        MemberModel member = DatabaseContext.Members
                                         .Select(m => new MemberModel()
                                         {
                                             ID = m.ID,

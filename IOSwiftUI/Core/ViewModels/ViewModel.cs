@@ -16,9 +16,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace IOSwiftUI.Core.ViewModels;
 
-public class ViewModel : IOViewModel
+public class ViewModel : IOViewModel<DatabaseContext>
 {
-    public DatabaseContext DBContext { get; set; }
     public MemberModel CurrentMember { get; set; }
     
     #region Initialization Methods
@@ -53,7 +52,7 @@ public class ViewModel : IOViewModel
         IOCacheObject cachedObject = IOCache.GetCachedObject(cacheKey);
         if (cachedObject == null)
         {
-            CurrentMember = DBContext.Members
+            CurrentMember = DatabaseContext.Members
                                         .Select(m => new MemberModel()
                                         {
                                             ID = m.ID,
@@ -69,7 +68,7 @@ public class ViewModel : IOViewModel
                                             ProfilePicturePublicId = m.ProfilePictureFileName,
                                             PhoneNumber = m.PhoneNumber,
                                             UserStatus = m.UserStatus,
-                                            Followings = DBContext.MemberFollowings
+                                            Followings = DatabaseContext.MemberFollowings
                                                                         .Select(mf => new MemberFollowingModel()
                                                                         {
                                                                             MemberID = mf.Member.ID,
@@ -124,7 +123,7 @@ public class ViewModel : IOViewModel
 
     public void CheckOTPValidated(string phoneNumber)
     {
-        OneTimeCodeEntity otpEntity = DBContext.OneTimeCodes.Where(otp => otp.PhoneNumber.Equals(phoneNumber))
+        OneTimeCodeEntity otpEntity = DatabaseContext.OneTimeCodes.Where(otp => otp.PhoneNumber.Equals(phoneNumber))
                                                 .FirstOrDefault();
 
         if (otpEntity == null)

@@ -8,14 +8,10 @@ using Microsoft.Extensions.Logging;
 
 namespace IOSwiftUI.Core.Controllers;
 
-public class Controller<TViewModel> : IOController<TViewModel> where TViewModel : ViewModel, new()
+public class Controller<TViewModel> : IOController<TViewModel, DatabaseContext> where TViewModel : ViewModel, new()
 {
 
-    public DatabaseContext DBContext { get; set; }
-
-    public Controller(IConfiguration configuration, IWebHostEnvironment environment, ILogger<IOLoggerType> logger, DatabaseContext dbContext) : base(configuration, environment, logger)
+    public Controller(IConfiguration configuration, IWebHostEnvironment environment, ILogger<IOLoggerType> logger, DatabaseContext databaseContext) : base(configuration, environment, logger, databaseContext)
     {
-        DBContext = dbContext;
-        ViewModel.DBContext = DBContext;
     }
 }
