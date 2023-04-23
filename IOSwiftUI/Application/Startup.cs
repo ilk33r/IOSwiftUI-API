@@ -7,17 +7,10 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace IOSwiftUI.Application;
 
-public class Startup : IOStartup
+public class Startup : IOStartup<DatabaseContext>
 {
     public Startup(IConfiguration configuration, IWebHostEnvironment env) : base(configuration, env)
     {
-    }
-
-    public override void ConfigureServices(IServiceCollection services)
-    {
-        base.ConfigureServices(services);
-
-        services.AddDbContext<DatabaseContext>(opt => DatabaseContextOptions((DbContextOptionsBuilder<DatabaseContext>)opt));
     }
 
     public override void ConfigureSwagger(SwaggerGenOptions options)
@@ -25,7 +18,7 @@ public class Startup : IOStartup
         options.OperationFilter<DefaultHeaderFilter>();
     }
     
-    private void DatabaseContextOptions(DbContextOptionsBuilder<DatabaseContext> options)
+    public override void DatabaseContextOptions(DbContextOptionsBuilder<DatabaseContext> options)
     {
         string migrationAssembly = Configuration.GetValue<string>(ConfigurationConstants.MigrationsAssemblyKey);
         #if DEBUG
@@ -40,6 +33,10 @@ public class Startup : IOStartup
         #if USE_MYSQL_DATABASE
         // options.UseMySQL(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly(migrationAssembly));
         options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(5, 0, 7)), b => b.MigrationsAssembly(migrationAssembly));
+        #elif USE_SQLSRV_DATABASE
+        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly(migrationAssembly));
+        #else
+        options.UseInMemoryDatabase("IOMemory");
         #endif
     }
     
