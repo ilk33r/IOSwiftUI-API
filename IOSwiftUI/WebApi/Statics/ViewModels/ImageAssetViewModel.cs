@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using IOSwiftUI.Common.Constants;
 using IOSwiftUI.Common.Exceptions;
@@ -11,6 +12,11 @@ public class ImageAssetViewModel : ImageViewModel
     public FileStream GetImageFile(string publicId)
     {
         string fileName = GetFileName(publicId);
+        if (String.IsNullOrEmpty(fileName))
+        {
+            throw new ImageNotFoundException();
+        }
+
         string imagesFolder = Configuration.GetValue<string>(ConfigurationConstants.ImagesFolderKey);
         string imagePath = Path.Combine(imagesFolder, fileName);
 

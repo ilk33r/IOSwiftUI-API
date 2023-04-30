@@ -118,7 +118,12 @@ public class ViewModel : IOViewModel<DatabaseContext>
 		byte[] key = Convert.FromBase64String(Configuration.GetValue<string>(IOConfigurationConstants.EncryptionKey));
 		byte[] iv = Convert.FromBase64String(Configuration.GetValue<string>(IOConfigurationConstants.EncryptionIV));
         IOAESUtilities aesUtilities = new IOAESUtilities(key, iv);
-        return aesUtilities.Decrypt(publicId);
+        if (!String.IsNullOrEmpty(publicId)) 
+        {
+            return aesUtilities.Decrypt(publicId);
+        }
+
+        return null;
     }
 
     public void CheckOTPValidated(string phoneNumber)
