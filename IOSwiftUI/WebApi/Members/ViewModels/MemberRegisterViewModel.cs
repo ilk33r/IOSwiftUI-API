@@ -85,7 +85,8 @@ public class MemberRegisterViewModel : ViewModel
             UserStatus = UserStatuses.Active,
             DeviceId = requestModel.DeviceId,
             DeviceManifacturer = requestModel.DeviceManifacturer,
-            DeviceModel = requestModel.DeviceModel
+            DeviceModel = requestModel.DeviceModel,
+            MRZFullString = requestModel.MRZFullString
         };
 
         DatabaseContext.Members.Add(newMember);

@@ -1,0 +1,14 @@
+﻿START TRANSACTION;
+
+ALTER TABLE `Members` ADD `MRZFullString` varchar(128) CHARACTER SET utf8mb4 NULL;
+
+UPDATE `Users` SET `Password` = '$IOPSSWD$V1$10000$iF2eGK9pta12h/NXjo05ASI63DcTchHow0KFST2fw/hOsIYpylKOsBIgqvFLRX7ZEmSNfQg5Ymgc7SgQFHrbQQM1uhC4ymDRC0/kJJXY4MzrKHqLT4I9wSLh3e1WEaBk'
+WHERE `ID` = 1;
+SELECT ROW_COUNT();
+
+
+INSERT INTO `__EFMigrationsHistory` (`MigrationId`, `ProductVersion`)
+VALUES ('20230427191413_MemberVerified', '6.0.2');
+
+COMMIT;
+

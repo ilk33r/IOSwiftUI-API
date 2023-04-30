@@ -71,4 +71,7 @@ public class MemberEntity
     [Required]
     [StringLength(32)]
     public string DeviceModel { get; set; }
+
+    [StringLength(128)]
+    public string MRZFullString { get; set; }
 }

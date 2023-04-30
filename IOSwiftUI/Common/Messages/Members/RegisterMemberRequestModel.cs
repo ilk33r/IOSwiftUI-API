@@ -51,4 +51,7 @@ public class RegisterMemberRequestModel : RequestModel
     [Required]
     [StringLength(32)]
     public string DeviceModel { get; set; }
+
+    [StringLength(128)]
+    public string MRZFullString { get; set; }
 }
