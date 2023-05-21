@@ -68,7 +68,8 @@ public class OTPViewModel : ViewModel
             throw new WrongOTPException();
         }
 
-        if (!otpEntity.OneTimeCode.Equals(otp))
+        bool otpTest = Configuration.GetValue<bool>(ConfigurationConstants.OTPTest);
+        if (!otpTest && !otpEntity.OneTimeCode.Equals(otp))
         {
             throw new WrongOTPException();
         }
