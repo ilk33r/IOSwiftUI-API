@@ -38,6 +38,19 @@ public class MemberLoginController : Controller<MemberLoginViewModel>
         return ViewModel.Authenticate(requestModel);
     }
 
+    [IOValidateRequestModel]
+    [IORequireHTTPS]
+    [IOUserRole(UserRoles.AnonmyMouse)]
+    [HttpPost("[action]")]
+    public BiometricAuthenticateResponseModel BiometricToken([FromBody] BiometricAuthenticateRequestModel requestModel)
+    {
+        string biometricToken = ViewModel.BiometricToken(requestModel.UserName);
+        return new BiometricAuthenticateResponseModel()
+        {
+            BiometricToken = biometricToken
+        };
+    }
+
     [IORequireHTTPS]
     [IOUserRole(UserRoles.User)]
     [HttpGet("[action]")]

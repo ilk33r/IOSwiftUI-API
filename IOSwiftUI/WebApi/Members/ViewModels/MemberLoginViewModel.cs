@@ -7,6 +7,7 @@ using IOBootstrap.NET.Common.Utilities;
 using IOSwiftUI.Common.Constants;
 using IOSwiftUI.Common.Enumerations;
 using IOSwiftUI.Common.Messages.Members;
+using IOSwiftUI.Common.Models.Members;
 using IOSwiftUI.Core.ViewModels;
 using IOSwiftUI.DataAccess.Entities;
 using Microsoft.Extensions.Configuration;
@@ -59,5 +60,33 @@ public class MemberLoginViewModel : ViewModel
             Token = tokenWithUserID,
             Expire = null
         };
+    }
+
+    public string BiometricToken(string userName)
+    {
+        string decryptedUserName = DecryptString(userName);
+        
+        MemberFaceIDModel faceIDModel = DatabaseContext.MemberFaceIDs
+                                                        .Select(m => new MemberFaceIDModel() {
+                                                            ID = m.ID,
+                                                            MemberID = m.Member.ID,
+                                                            UserName = m.Member.UserName,
+                                                            AuthenticationKey = m.AuthenticationKey,
+                                                        })
+                                                        .Where(m => m.UserName.ToLower().Equals(decryptedUserName.ToLower()))
+                                                        .FirstOrDefault();
+
+        if (faceIDModel == null)
+        {
+            throw new IOUserNotFoundException();
+        }
+        
+        faceIDModel.BiometricToken = IORandomUtilities.GenerateRandomAlphaNumericString(12);
+        
+        string cacheKey = String.Format(CacheKeys.BiometricLoginCacheKey, decryptedUserName);
+        IOCacheObject cacheObject = new IOCacheObject(cacheKey, faceIDModel, 60);
+        IOCache.CacheObject(cacheObject);
+
+        return faceIDModel.BiometricToken;
     }
 }
