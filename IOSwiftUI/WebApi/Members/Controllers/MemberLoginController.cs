@@ -51,6 +51,15 @@ public class MemberLoginController : Controller<MemberLoginViewModel>
         };
     }
 
+    [IOValidateRequestModel]
+    [IORequireHTTPS]
+    [IOUserRole(UserRoles.AnonmyMouse)]
+    [HttpPost("[action]")]
+    public AuthenticateResponseModel AuthenticateWithBiometric([FromBody] AuthenticateWithBiometricRequestModel requestModel)
+    {
+        return ViewModel.AuthenticateWithBiometric(requestModel);
+    }
+
     [IORequireHTTPS]
     [IOUserRole(UserRoles.User)]
     [HttpGet("[action]")]

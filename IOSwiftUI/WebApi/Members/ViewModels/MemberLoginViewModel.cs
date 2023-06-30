@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
+using System.Text;
 using IOBootstrap.NET.Common.Cache;
+using IOBootstrap.NET.Common.Encryption;
 using IOBootstrap.NET.Common.Exceptions.Common;
 using IOBootstrap.NET.Common.Exceptions.Members;
 using IOBootstrap.NET.Common.Utilities;
@@ -88,5 +90,58 @@ public class MemberLoginViewModel : ViewModel
         IOCache.CacheObject(cacheObject);
 
         return faceIDModel.BiometricToken;
+    }
+
+    public AuthenticateResponseModel AuthenticateWithBiometric(AuthenticateWithBiometricRequestModel requestModel)
+    {
+        string cacheKey = String.Format(CacheKeys.BiometricLoginCacheKey, requestModel.UserName);
+        IOCacheObject cacheObject = IOCache.GetCachedObject(cacheKey);
+
+        if (cacheObject == null)
+        {
+            throw new IOUserNotFoundException();
+        }
+
+        MemberFaceIDModel faceIDModel = (MemberFaceIDModel)cacheObject.Value;
+        byte[] publicKey = IOHexUtilities.HexStringToByteArray(faceIDModel.AuthenticationKey);
+        byte[] plainData = Encoding.UTF8.GetBytes(faceIDModel.BiometricToken);
+        byte[] signedData = Convert.FromBase64String(requestModel.BiometricPassword);
+
+        if (IOEncryptionUtilities.VerifyECSignature(publicKey, plainData, signedData))
+        {
+            MemberEntity member = DatabaseContext.Members.Where(m => m.UserName.ToLower().Equals(requestModel.UserName.ToLower()))
+                                        .FirstOrDefault();
+
+            if (member == null)
+            {
+                throw new IOUserNotFoundException();
+            }
+
+            if (member.UserStatus != UserStatuses.Active)
+            {
+                throw new IOInvalidPermissionException();
+            }
+
+            string userToken = IORandomUtilities.GenerateGUIDString();
+
+            member.UserToken = userToken;
+            member.TokenDate = DateTime.UtcNow;
+            DatabaseContext.Update(member);
+            DatabaseContext.SaveChanges();
+
+            string memberCacheKey = String.Format(CacheKeys.UserCacheKey, member.ID.ToString());
+            IOCache.InvalidateCache(memberCacheKey);
+
+            string tokenWithUserID = String.Format("{0}-{1}", userToken, member.ID);
+            return new AuthenticateResponseModel()
+            {
+                Token = tokenWithUserID,
+                Expire = null
+            };
+        } 
+        else 
+        {
+            throw new IOInvalidCredentialsException();
+        }
     }
 }
