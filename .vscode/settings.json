@@ -8,5 +8,7 @@
     "azureFunctions.projectRuntime": "~4",
     "debug.internalConsoleOptions": "neverOpen",
     "azureFunctions.projectSubpath": "Functions",
-    "azureFunctions.preDeployTask": "publish (functions)"
+    "azureFunctions.preDeployTask": "publish (functions)",
+    "dotnet.defaultSolution": "IOSwiftUI-API.sln",
+    "cmake.configureOnOpen": false
 }

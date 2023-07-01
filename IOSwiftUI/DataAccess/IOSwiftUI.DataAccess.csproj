@@ -4,7 +4,7 @@
     <ProjectReference Include="..\..\Libraries\IOBootstrap-NET\DataAccess\IOBootstrap.NET.DataAccess.csproj" />
   </ItemGroup>
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <OutputType>Library</OutputType>
   </PropertyGroup>
 </Project>
