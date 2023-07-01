@@ -138,7 +138,7 @@ public class DiscoverViewModel : ViewModel
                                                             CreateDate = i.CreateDate
                                                         })
                                                         .OrderByDescending(i => i.CreateDate)
-                                                        .Take(50)
+                                                        .Take(150)
                                                         .ToList();
 
         Dictionary<int, DiscoverStoryModel> stories = new Dictionary<int, DiscoverStoryModel>();
