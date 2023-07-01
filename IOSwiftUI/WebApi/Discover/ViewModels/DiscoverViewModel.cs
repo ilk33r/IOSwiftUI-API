@@ -28,7 +28,7 @@ public class DiscoverViewModel : ViewModel
                                                                     MemberId = i.Member.ID,
                                                                     PublicId = i.FileName,
                                                                     UserName = i.Member.UserName,
-                                                                    UserNameAndSurname = i.Member.Name + " "  + i.Member.Surname,
+                                                                    UserNameAndSurname = i.Member.Name + " " + i.Member.Surname,
                                                                     UserProfilePicturePublicId = i.Member.ProfilePictureFileName,
                                                                     CreateDate = i.CreateDate
                                                                 })
@@ -38,7 +38,7 @@ public class DiscoverViewModel : ViewModel
                                                                 .Take(pagination.Count)
                                                                 .ToList();
 
-        foreach(DiscoverImageModel image in followingImages)
+        foreach (DiscoverImageModel image in followingImages)
         {
             image.PublicId = CreatePublicId(image.PublicId);
             if (!String.IsNullOrEmpty(image.UserProfilePicturePublicId))
@@ -65,7 +65,7 @@ public class DiscoverViewModel : ViewModel
                                                                     MemberId = i.Member.ID,
                                                                     PublicId = i.FileName,
                                                                     UserName = i.Member.UserName,
-                                                                    UserNameAndSurname = i.Member.Name + " "  + i.Member.Surname,
+                                                                    UserNameAndSurname = i.Member.Name + " " + i.Member.Surname,
                                                                     UserProfilePicturePublicId = i.Member.ProfilePictureFileName,
                                                                     CreateDate = i.CreateDate
                                                                 })
@@ -75,7 +75,7 @@ public class DiscoverViewModel : ViewModel
                                                                 .Take(pagination.Count)
                                                                 .ToList();
 
-        foreach(DiscoverImageModel image in followingImages)
+        foreach (DiscoverImageModel image in followingImages)
         {
             image.PublicId = CreatePublicId(image.PublicId);
             if (!String.IsNullOrEmpty(image.UserProfilePicturePublicId))
@@ -83,7 +83,7 @@ public class DiscoverViewModel : ViewModel
                 image.UserProfilePicturePublicId = CreatePublicId(image.UserProfilePicturePublicId);
             }
         }
-        
+
         responsePagination.Count = followingImages.Count();
         return new DiscoverImagesResponseModel(followingImages, responsePagination);
     }
@@ -102,7 +102,7 @@ public class DiscoverViewModel : ViewModel
                                                                 MemberId = i.Member.ID,
                                                                 PublicId = i.FileName,
                                                                 UserName = i.Member.UserName,
-                                                                UserNameAndSurname = i.Member.Name + " "  + i.Member.Surname,
+                                                                UserNameAndSurname = i.Member.Name + " " + i.Member.Surname,
                                                                 UserProfilePicturePublicId = i.Member.ProfilePictureFileName,
                                                                 CreateDate = i.CreateDate
                                                             })
@@ -112,7 +112,7 @@ public class DiscoverViewModel : ViewModel
                                                             .Take(pagination.Count)
                                                             .ToList();
 
-        foreach(DiscoverImageModel image in memberImages)
+        foreach (DiscoverImageModel image in memberImages)
         {
             image.PublicId = CreatePublicId(image.PublicId);
             if (!String.IsNullOrEmpty(image.UserProfilePicturePublicId))
@@ -120,8 +120,50 @@ public class DiscoverViewModel : ViewModel
                 image.UserProfilePicturePublicId = CreatePublicId(image.UserProfilePicturePublicId);
             }
         }
-        
+
         responsePagination.Count = memberImages.Count();
         return new DiscoverImagesResponseModel(memberImages, responsePagination);
+    }
+
+    public IList<DiscoverStoryModel> DiscoverStories()
+    {
+        IList<DiscoverImageModel> allStories = DatabaseContext.MemberImages
+                                                        .Select(i => new DiscoverImageModel()
+                                                        {
+                                                            MemberId = i.Member.ID,
+                                                            PublicId = i.FileName,
+                                                            UserName = i.Member.UserName,
+                                                            UserNameAndSurname = i.Member.Name + " " + i.Member.Surname,
+                                                            UserProfilePicturePublicId = i.Member.ProfilePictureFileName,
+                                                            CreateDate = i.CreateDate
+                                                        })
+                                                        .OrderByDescending(i => i.CreateDate)
+                                                        .Take(50)
+                                                        .ToList();
+
+        Dictionary<int, DiscoverStoryModel> stories = new Dictionary<int, DiscoverStoryModel>();
+        foreach (DiscoverImageModel story in allStories)
+        {
+            DiscoverStoryModel storyModel;
+            if (stories.ContainsKey(story.MemberId))
+            {
+                storyModel = stories[story.MemberId];
+            }
+            else
+            {
+                storyModel = new DiscoverStoryModel();
+                storyModel.Images = new List<DiscoverImageModel>();
+                stories[story.MemberId] = storyModel;
+            }
+
+            story.PublicId = CreatePublicId(story.PublicId);
+            if (!String.IsNullOrEmpty(story.UserProfilePicturePublicId))
+            {
+                story.UserProfilePicturePublicId = CreatePublicId(story.UserProfilePicturePublicId);
+            }
+            storyModel.Images.Add(story);
+        }
+
+        return stories.Values.ToList();
     }
 }

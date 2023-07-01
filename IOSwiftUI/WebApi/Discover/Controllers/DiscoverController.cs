@@ -55,4 +55,13 @@ public class DiscoverController : Controller<DiscoverViewModel>
 
         return ViewModel.DiscoverMemberImages(requestModel.UserName, requestModel.Pagination);
     }
+
+    [IORequireHTTPS]
+    [IOUserRole(UserRoles.User)]
+    [IOValidateRequestModel]
+    [HttpGet("[action]")]
+    public DiscoverStoriesResponseModel DiscoverStories()
+    {
+        return new DiscoverStoriesResponseModel(ViewModel.DiscoverStories());
+    }
 }
