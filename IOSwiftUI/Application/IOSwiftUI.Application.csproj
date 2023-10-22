@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WebApi\IOSwiftUI.WebApi.csproj" />
     <ProjectReference Include="..\..\Libraries\IOBootstrap-NET\Application\IOBootstrap.NET.Application.csproj" />
+    <ProjectReference Include="..\IOSwiftUI.BackOffice\IOSwiftUI.BackOffice.csproj" />
   </ItemGroup>
 
   <ItemGroup>
