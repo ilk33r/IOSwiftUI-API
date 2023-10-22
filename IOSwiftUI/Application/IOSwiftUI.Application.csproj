@@ -36,6 +36,10 @@
    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
   </PropertyGroup>
 
+  <ItemGroup> 
+    <None Include="Backoffice.UI\**" LinkBase="Backoffice.UI" />
+  </ItemGroup>
+
   <!--
   <ItemGroup> 
     <Content Include="Certificates\**" LinkBase="Certificates">
