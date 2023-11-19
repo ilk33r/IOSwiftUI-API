@@ -1,4 +1,4 @@
-﻿using IOSwiftUI.Common;
+using IOSwiftUI.Common;
 using IOSwiftUI.Core;
 
 namespace IOSwiftUI.BackOffice;
@@ -7,36 +7,37 @@ public class BackOfficeMembersViewModel : BackOfficeViewModel
 {
     public BOMemberListResponseModel GetMembers(int start, int count)
     {
-        int memberCount = DatabaseContext.Members.Count();
+        int MemberListCount = DatabaseContext.Members.Count();
         IList<BOMemberModel> paginatedMembers = DatabaseContext.Members
-                                                    .Select(m => new BOMemberModel()
+                                                    .Select(e => new BOMemberModel()
                                                     {
-                                                        ID = m.ID,
-                                                        UserName = m.UserName,
-                                                        // Password = m.Password,
-                                                        // UserToken = m.UserToken,
-                                                        // TokenDate = m.TokenDate,
-                                                        RegisterDate = m.RegisterDate,
-                                                        BirthDate = m.BirthDate,
-                                                        Email = m.Email,
-                                                        Name = m.Name,
-                                                        Surname = m.Surname,
-                                                        LocationName = m.LocationName,
-                                                        // LocationLatitude = m.LocationLatitude,
-                                                        // LocationLongitude = m.LocationLongitude,
-                                                        // ProfilePictureFileName = m.ProfilePictureFileName,
-                                                        PhoneNumber = m.PhoneNumber,
-                                                        UserStatus = m.UserStatus,
-                                                        // DeviceId = m.DeviceId,
-                                                        DeviceManifacturer = m.DeviceManifacturer,
-                                                        DeviceModel = m.DeviceModel,
-                                                        MRZFullString = m.MRZFullString
+                                                        ID = e.ID,
+                                                        UserName = e.UserName,
+                                                        // Password = e.Password,
+                                                        // UserToken = e.UserToken,
+                                                        // TokenDate = e.TokenDate,
+                                                        RegisterDate = e.RegisterDate,
+                                                        BirthDate = e.BirthDate,
+                                                        Email = e.Email,
+                                                        Name = e.Name,
+                                                        Surname = e.Surname,
+                                                        LocationName = e.LocationName,
+                                                        // LocationLatitude = e.LocationLatitude,
+                                                        // LocationLongitude = e.LocationLongitude,
+                                                        // ProfilePictureFileName = e.ProfilePictureFileName,
+                                                        PhoneNumber = e.PhoneNumber,
+                                                        UserStatus = e.UserStatus,
+                                                        // DeviceId = e.DeviceId,
+                                                        DeviceManifacturer = e.DeviceManifacturer,
+                                                        DeviceModel = e.DeviceModel,
+                                                        MRZFullString = e.MRZFullString,
+
                                                     })
-                                                    .OrderBy(m => m.ID)
+                                                    .OrderBy(e => e.ID)
                                                     .Skip(start)
                                                     .Take(count)
                                                     .ToList();
 
-        return new BOMemberListResponseModel(memberCount, paginatedMembers);
+        return new BOMemberListResponseModel(MemberListCount, paginatedMembers);
     }
 }

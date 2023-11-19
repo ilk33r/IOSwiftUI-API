@@ -1,4 +1,4 @@
-﻿using IOBootstrap.NET.Common.Attributes;
+using IOBootstrap.NET.Common.Attributes;
 using IOBootstrap.NET.Common.Enumerations;
 using IOBootstrap.NET.Common.Logger;
 using IOSwiftUI.Common;
