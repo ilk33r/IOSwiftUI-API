@@ -35,6 +35,7 @@ import UsersListController from "../../users/controllers/UsersListController";
 import UsersLogoutController from "../../users/controllers/UsersLogoutController";
 import UsersUpdateController from "../../users/controllers/UsersUpdateController";
 import View from "../../../presentation/views/View";
+import GenerateBOPageController from "../../generatebopage/controllers/GenerateBOPageController";
 import MemberListController from "../../members/controllers/MemberListController";
 
 class NavigationView extends View<NavigationProps, NavigationState> {
@@ -198,6 +199,10 @@ class NavigationView extends View<NavigationProps, NavigationState> {
 
         if (this.state.pageHash === "imageModify") {
             return <ImagesModifyController />
+        }
+
+        if (this.state.pageHash === "actionGenerateBOPage") {
+            return <GenerateBOPageController />
         }
 
         if (this.state.pageHash === "memberList") {
