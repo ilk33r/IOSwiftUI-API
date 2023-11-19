@@ -36,7 +36,10 @@
    <IsTransformWebConfigDisabled>true</IsTransformWebConfigDisabled>
   </PropertyGroup>
 
-  <ItemGroup> 
+  <ItemGroup>
+    <Content Include="BOTemplates\**" LinkBase="BOTemplates">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory> 
+    </Content>
     <None Include="Backoffice.UI\**" LinkBase="Backoffice.UI" />
   </ItemGroup>
 
