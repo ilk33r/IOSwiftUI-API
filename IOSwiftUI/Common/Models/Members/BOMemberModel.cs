@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using IOSwiftUI.Common.Enumerations;
 using IOSwiftUI.Common.Models.Base;
@@ -18,7 +18,7 @@ public class BOMemberModel : Model
 
     [StringLength(48)]
     public string UserToken { get; set; }
-    
+
     public DateTimeOffset TokenDate { get; set; }
 
     [Required]
@@ -53,13 +53,10 @@ public class BOMemberModel : Model
     [Required]
     public UserStatuses UserStatus { get; set; }
 
-    // [ForeignKey("MemberID")]
-    // public ICollection<ImagesEntity> Images { get; set; }
-
     [Required]
     [StringLength(128)]
     public string DeviceId { get; set; }
-        
+
     [Required]
     [StringLength(32)]
     public string DeviceManifacturer { get; set; }
@@ -70,4 +67,6 @@ public class BOMemberModel : Model
 
     [StringLength(128)]
     public string MRZFullString { get; set; }
+
+
 }

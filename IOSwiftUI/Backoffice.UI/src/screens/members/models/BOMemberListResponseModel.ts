@@ -4,13 +4,13 @@ import BOMemberModel from "./BOMemberModel";
 class BOMemberListResponseModel extends BaseResponseModel {
 
     count: number;
-    members: BOMemberModel[];
+    memberList: BOMemberModel[];
 
     constructor() {
         super();
 
         this.count = 0;
-        this.members = [];
+        this.memberList = [];
     }
 }
 

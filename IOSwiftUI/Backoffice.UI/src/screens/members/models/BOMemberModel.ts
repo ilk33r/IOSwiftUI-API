@@ -1,13 +1,14 @@
 import UserStatuses from "../enumerations/UserStatuses";
 
+
 class BOMemberModel {
 
-    id: number;
+    id: number | null;
     userName: string;
     password: string;
     userToken: string | null;
     tokenDate: string | null;
-    registerDate: string | null;
+    registerDate: string;
     birthDate: string | null;
     email: string;
     name: string;
@@ -24,12 +25,12 @@ class BOMemberModel {
     mrzFullString: string | null;
 
     constructor() {
-        this.id = 0;
+        this.id = null;
         this.userName = "";
         this.password = "";
         this.userToken = null;
         this.tokenDate = null;
-        this.registerDate = null;
+        this.registerDate = "";
         this.birthDate = null;
         this.email = "";
         this.name = "";
@@ -44,6 +45,7 @@ class BOMemberModel {
         this.deviceManifacturer = "";
         this.deviceModel = "";
         this.mrzFullString = null;
+
     }
 }
 

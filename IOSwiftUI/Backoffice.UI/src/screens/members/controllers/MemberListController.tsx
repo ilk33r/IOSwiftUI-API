@@ -10,6 +10,7 @@ import BOMemberListRequestModel from "../models/BOMemberListRequestModel";
 import BOMemberListResponseModel from "../models/BOMemberListResponseModel";
 import UserStatuses from "../enumerations/UserStatuses";
 
+
 class MemberListController extends Controller<MemberListProps, MemberListState> {
 
     private requestModel: BOMemberListRequestModel;
@@ -33,7 +34,7 @@ class MemberListController extends Controller<MemberListProps, MemberListState> 
             if (weakSelf.handleServiceSuccess(response)) {
                 const newState = new MemberListState();
                 newState.count = response.count;
-                newState.members = response.members;
+                newState.memberList = response.memberList;
 
                 weakSelf.setState(newState);
             }
@@ -80,11 +81,12 @@ class MemberListController extends Controller<MemberListProps, MemberListState> 
             'DeviceManifacturer',
             'DeviceModel',
             'MRZFullString',
+
         ];
 
-        const items = this.state.members.map(member => {
+        const items = this.state.memberList.map(member => {
             const itemModel = new ListDataItemModel();
-            const id = member.id.toString();
+            const id = (member.id == null) ? "-" : member.id.toString();
             const userName = member.userName;
             // const password = member.password;
             // const userToken = (member.userToken == null) ? "-" : member.userToken;
@@ -125,7 +127,8 @@ class MemberListController extends Controller<MemberListProps, MemberListState> 
                 // deviceId,
                 deviceManifacturer,
                 deviceModel,
-                mrzFullString
+                mrzFullString,
+
             ];
 
             return itemModel;
