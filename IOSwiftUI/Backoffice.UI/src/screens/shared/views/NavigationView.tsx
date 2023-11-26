@@ -37,6 +37,7 @@ import UsersUpdateController from "../../users/controllers/UsersUpdateController
 import View from "../../../presentation/views/View";
 import GenerateBOPageController from "../../generatebopage/controllers/GenerateBOPageController";
 import MemberListController from "../../members/controllers/MemberListController";
+import MemberUpdateController from "../../members/controllers/MemberUpdateController";
 
 class NavigationView extends View<NavigationProps, NavigationState> {
 
@@ -207,6 +208,10 @@ class NavigationView extends View<NavigationProps, NavigationState> {
 
         if (this.state.pageHash === "memberList") {
             return <MemberListController />
+        }
+
+        if (this.state.pageHash === "memberUpdate") {
+            return <MemberUpdateController />
         }
 
         return (

@@ -2,6 +2,7 @@ using IOBootstrap.NET.Common.Attributes;
 using IOBootstrap.NET.Common.Enumerations;
 using IOBootstrap.NET.Common.Logger;
 using IOSwiftUI.Common;
+using IOSwiftUI.Common.Messages.Base;
 using IOSwiftUI.Core;
 using IOSwiftUI.DataAccess.Context;
 using Microsoft.AspNetCore.Cors;
@@ -26,5 +27,17 @@ public class BackOfficeMembersController : BackOfficeController<BackOfficeMember
     public BOMemberListResponseModel GetMembers([FromBody] BOMemberListRequestModel requestModel) 
     {
         return ViewModel.GetMembers(requestModel.Start, requestModel.Count);
+    }
+
+    [IOValidateRequestModel]
+    [IOUserRole(UserRoles.SuperAdmin)]
+    [HttpPost("[action]")]
+    public ResponseModel UpdateMember([FromBody] BOMemberUpdateRequestModel requestModel)
+    {
+        // Add menu
+        ViewModel.UpdateMember(requestModel);
+
+        // Create and return response
+        return new ResponseModel();
     }
 }

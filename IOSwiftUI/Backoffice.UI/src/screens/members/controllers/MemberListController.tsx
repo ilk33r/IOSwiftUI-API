@@ -8,8 +8,8 @@ import MemberListState from "../props/MemberListState";
 import MemberListProps from "../props/MemberListProps";
 import BOMemberListRequestModel from "../models/BOMemberListRequestModel";
 import BOMemberListResponseModel from "../models/BOMemberListResponseModel";
+import BOMemberUpdateRequestModel from "../models/BOMemberUpdateRequestModel";
 import UserStatuses from "../enumerations/UserStatuses";
-
 
 class MemberListController extends Controller<MemberListProps, MemberListState> {
 
@@ -22,6 +22,7 @@ class MemberListController extends Controller<MemberListProps, MemberListState> 
         this.state = new MemberListState();
 
         this.pageChangeHandler = this.pageChangeHandler.bind(this);
+        this.updateDataHandler = this.updateDataHandler.bind(this);
     }
 
     private loadMembers() {
@@ -53,6 +54,34 @@ class MemberListController extends Controller<MemberListProps, MemberListState> 
         this.requestModel.start = start;
         this.requestModel.count = length;
         this.loadMembers();
+    }
+
+    private updateDataHandler(index: number) {
+        const currentUser = this.state.memberList[index];
+        const updateRequestModel = new BOMemberUpdateRequestModel();
+        updateRequestModel.id = currentUser.id;
+        updateRequestModel.userName = currentUser.userName;
+        // updateRequestModel.password = currentUser.password;
+        // updateRequestModel.userToken = currentUser.userToken;
+        // updateRequestModel.tokenDate = currentUser.tokenDate;
+        updateRequestModel.registerDate = currentUser.registerDate;
+        updateRequestModel.birthDate = currentUser.birthDate;
+        updateRequestModel.email = currentUser.email;
+        updateRequestModel.name = currentUser.name;
+        updateRequestModel.surname = currentUser.surname;
+        updateRequestModel.locationName = currentUser.locationName;
+        // updateRequestModel.locationLatitude = currentUser.locationLatitude;
+        // updateRequestModel.locationLongitude = currentUser.locationLongitude;
+        // updateRequestModel.profilePictureFileName = currentUser.profilePictureFileName;
+        updateRequestModel.phoneNumber = currentUser.phoneNumber;
+        updateRequestModel.userStatus = currentUser.userStatus;
+        // updateRequestModel.deviceId = currentUser.deviceId;
+        updateRequestModel.deviceManifacturer = currentUser.deviceManifacturer;
+        updateRequestModel.deviceModel = currentUser.deviceModel;
+        updateRequestModel.mrzFullString = currentUser.mrzFullString;
+
+        this.appContext.setObjectForKey("memberUpdateRequest", updateRequestModel);
+        this.navigateToPage("memberUpdate");
     }
 
     render() {
@@ -152,7 +181,7 @@ class MemberListController extends Controller<MemberListProps, MemberListState> 
                     resourceSelect=""
                     extras={null}
                     deleteDataHandler={null}
-                    updateDataHandler={null}
+                    updateDataHandler={this.updateDataHandler}
                     selectDataHandler={null}
                     pagination={pagination} />
             </React.StrictMode>
