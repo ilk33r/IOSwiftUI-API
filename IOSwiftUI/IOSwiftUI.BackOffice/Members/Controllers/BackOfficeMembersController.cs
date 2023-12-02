@@ -30,7 +30,7 @@ public class BackOfficeMembersController : BackOfficeController<BackOfficeMember
     }
 
     [IOValidateRequestModel]
-    [IOUserRole(UserRoles.SuperAdmin)]
+    [IOUserRole(UserRoles.Admin)]
     [HttpPost("[action]")]
     public ResponseModel UpdateMember([FromBody] BOMemberUpdateRequestModel requestModel)
     {

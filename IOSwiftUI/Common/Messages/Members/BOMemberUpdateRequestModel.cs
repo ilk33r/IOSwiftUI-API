@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using IOSwiftUI.Common.Enumerations;
 using IOSwiftUI.Common.Messages.Base;
@@ -69,4 +69,6 @@ public class BOMemberUpdateRequestModel : RequestModel
 
     [StringLength(128)]
     public string MRZFullString { get; set; }
+
+
 }

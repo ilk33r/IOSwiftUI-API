@@ -47,7 +47,8 @@ public class BackOfficeMembersViewModel : BackOfficeViewModel
     {
         MemberEntity member = DatabaseContext.Find<MemberEntity>(requestModel.ID) ?? throw new IOInvalidRequestException("Item not found");
 
-        // Update menu item entity
+        // Update item entity
+        member.ID = requestModel.ID;
         member.UserName = requestModel.UserName;
         // member.Password = requestModel.Password;
         // member.UserToken = requestModel.UserToken;
@@ -68,7 +69,7 @@ public class BackOfficeMembersViewModel : BackOfficeViewModel
         member.DeviceModel = requestModel.DeviceModel;
         member.MRZFullString = requestModel.MRZFullString;
 
-        // Add menu entity to database
+        // Update entity to database
         DatabaseContext.Update(member);
         DatabaseContext.SaveChanges();
     }
