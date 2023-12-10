@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using IOSwiftUI.Common.Enumerations;
 using IOSwiftUI.Common.Messages.Base;
@@ -7,6 +7,8 @@ namespace IOSwiftUI.Common;
 
 public class BOMemberAddRequestModel : RequestModel
 {
+
+    public int ID { get; set; }
 
     [Required]
     [StringLength(128)]
@@ -66,5 +68,6 @@ public class BOMemberAddRequestModel : RequestModel
 
     [StringLength(128)]
     public string MRZFullString { get; set; }
+
 
 }

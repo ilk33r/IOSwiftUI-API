@@ -115,6 +115,7 @@ public class BackOfficeMembersViewModel : BackOfficeViewModel
         member.DeviceModel = requestModel.DeviceModel;
         member.MRZFullString = requestModel.MRZFullString;
 
+
         // Create entity to database
         DatabaseContext.Add(member);
         DatabaseContext.SaveChanges();
