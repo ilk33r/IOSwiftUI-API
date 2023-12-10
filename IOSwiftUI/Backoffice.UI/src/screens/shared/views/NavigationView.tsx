@@ -39,6 +39,7 @@ import GenerateBOPageController from "../../generatebopage/controllers/GenerateB
 import MemberListController from "../../members/controllers/MemberListController";
 import MemberUpdateController from "../../members/controllers/MemberUpdateController";
 import MemberDeleteController from "../../members/controllers/MemberDeleteController";
+import MemberAddController from "../../members/controllers/MemberAddController";
 
 class NavigationView extends View<NavigationProps, NavigationState> {
 
@@ -217,6 +218,10 @@ class NavigationView extends View<NavigationProps, NavigationState> {
 
         if (this.state.pageHash === "memberDelete") { 
             return <MemberDeleteController /> 
+        }
+
+        if (this.state.pageHash === "memberAdd") { 
+            return <MemberAddController /> 
         }
 
         return (

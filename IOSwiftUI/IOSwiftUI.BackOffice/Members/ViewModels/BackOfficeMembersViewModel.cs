@@ -89,4 +89,34 @@ public class BackOfficeMembersViewModel : BackOfficeViewModel
         DatabaseContext.Remove(member);
         DatabaseContext.SaveChanges();
     }
+
+    public void CreateMember(BOMemberAddRequestModel requestModel)
+    {
+        MemberEntity member = new MemberEntity();
+
+        // Create item entity
+        member.UserName = requestModel.UserName;
+        member.Password = requestModel.Password;
+        member.UserToken = requestModel.UserToken;
+        member.TokenDate = requestModel.TokenDate;
+        member.RegisterDate = requestModel.RegisterDate;
+        member.BirthDate = requestModel.BirthDate;
+        member.Email = requestModel.Email;
+        member.Name = requestModel.Name;
+        member.Surname = requestModel.Surname;
+        member.LocationName = requestModel.LocationName;
+        member.LocationLatitude = requestModel.LocationLatitude;
+        member.LocationLongitude = requestModel.LocationLongitude;
+        member.ProfilePictureFileName = requestModel.ProfilePictureFileName;
+        member.PhoneNumber = requestModel.PhoneNumber;
+        member.UserStatus = requestModel.UserStatus;
+        member.DeviceId = requestModel.DeviceId;
+        member.DeviceManifacturer = requestModel.DeviceManifacturer;
+        member.DeviceModel = requestModel.DeviceModel;
+        member.MRZFullString = requestModel.MRZFullString;
+
+        // Create entity to database
+        DatabaseContext.Add(member);
+        DatabaseContext.SaveChanges();
+    }
 }

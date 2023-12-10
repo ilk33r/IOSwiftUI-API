@@ -52,4 +52,16 @@ public class BackOfficeMembersController : BackOfficeController<BackOfficeMember
         // Create and return response
         return new ResponseModel();
     }
+
+    [IOValidateRequestModel]
+    [IOUserRole(UserRoles.Admin)]
+    [HttpPost("[action]")]
+    public ResponseModel CreateMember([FromBody] BOMemberAddRequestModel requestModel)
+    {
+        // Create item
+        ViewModel.CreateMember(requestModel);
+
+        // Create and return response
+        return new ResponseModel();
+    }
 }
