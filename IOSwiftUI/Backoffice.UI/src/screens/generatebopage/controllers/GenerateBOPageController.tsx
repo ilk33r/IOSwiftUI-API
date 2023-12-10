@@ -112,8 +112,13 @@ class GenerateBOPageController extends Controller<GenerateBOPageProps, GenerateB
         ];
 
         const listNavigationViewDescriptions = [
-            "import " + this.state.boPageDataResponse.listEntityDisplayName + " from \"../../" + this.state.boPageDataResponse.entityDisplayName.toLowerCase() + "/controllers/" + this.state.boPageDataResponse.listEntityDisplayName + "\";",
-            "if (this.state.pageHash === \"" + this.state.boPageDataResponse.listEntityName + "\") { return <" + this.state.boPageDataResponse.listEntityDisplayName + " /> }"
+            "import " + this.state.boPageDataResponse.listEntityDisplayName + "Controller from \"../../" + this.state.boPageDataResponse.entityDisplayName.toLowerCase() + "/controllers/" + this.state.boPageDataResponse.listEntityDisplayName + "Controller\";",
+            "if (this.state.pageHash === \"" + this.state.boPageDataResponse.listEntityName + "\") { return <" + this.state.boPageDataResponse.listEntityDisplayName + "Controller /> }"
+        ];
+
+        const updateNavigationViewDescriptions = [
+            "import " + this.state.boPageDataResponse.updateEntityDisplayName + "Controller from \"../../" + this.state.boPageDataResponse.entityDisplayName.toLowerCase() + "/controllers/" + this.state.boPageDataResponse.updateEntityDisplayName + "Controller\";",
+            "if (this.state.pageHash === \"" + this.state.boPageDataResponse.updateEntityName + "\") { return <" + this.state.boPageDataResponse.updateEntityDisplayName + "Controller /> }"
         ];
         return (
             <React.StrictMode>
@@ -151,6 +156,10 @@ class GenerateBOPageController extends Controller<GenerateBOPageProps, GenerateB
                         <CodeBlockView title="Navigation"
                             sectionTitle="Backoffice.UI/src/screens/shared/views/NavigationView.tsx"
                             descriptions={listNavigationViewDescriptions} />
+
+                        <CodeBlockView title="Navigation"
+                            sectionTitle="Backoffice.UI/src/screens/shared/views/NavigationView.tsx"
+                            descriptions={updateNavigationViewDescriptions} />
                     </div>
                 </div>
             </React.StrictMode>

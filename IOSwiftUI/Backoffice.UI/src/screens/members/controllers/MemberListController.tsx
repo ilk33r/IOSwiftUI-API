@@ -11,6 +11,7 @@ import BOMemberListResponseModel from "../models/BOMemberListResponseModel";
 import BOMemberUpdateRequestModel from "../models/BOMemberUpdateRequestModel";
 import UserStatuses from "../enumerations/UserStatuses";
 
+
 class MemberListController extends Controller<MemberListProps, MemberListState> {
 
     private requestModel: BOMemberListRequestModel;
@@ -120,7 +121,7 @@ class MemberListController extends Controller<MemberListProps, MemberListState> 
             // const password = member.password;
             // const userToken = (member.userToken == null) ? "-" : member.userToken;
             // const tokenDate = (member.tokenDate == null) ? "-" : member.tokenDate;
-            const registerDate = (member.registerDate == null) ? "-" : member.registerDate;
+            const registerDate = member.registerDate;
             const birthDate = (member.birthDate == null) ? "-" : member.birthDate;
             const email = member.email;
             const name = member.name;

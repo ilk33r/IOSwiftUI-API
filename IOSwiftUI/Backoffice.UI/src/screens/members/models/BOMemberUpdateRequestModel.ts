@@ -1,6 +1,7 @@
 import BaseRequestModel from "../../../common/models/BaseRequestModel";
 import UserStatuses from "../enumerations/UserStatuses";
 
+
 class BOMemberUpdateRequestModel extends BaseRequestModel {
 
     id: number | null;
@@ -47,6 +48,7 @@ class BOMemberUpdateRequestModel extends BaseRequestModel {
         this.deviceManifacturer = "";
         this.deviceModel = "";
         this.mrzFullString = null;
+
     }
 }
 

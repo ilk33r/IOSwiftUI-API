@@ -3,6 +3,7 @@ import Controller from "../../../presentation/controllers/Controller";
 import CalloutTypes from "../../../presentation/constants/CalloutTypes";
 import FormType from "../../shared/interfaces/FormType";
 import FormView from "../../shared/views/FormView";
+import FormTypeNumberProps from "../../shared/props/FormTypeNumberProps";
 import FormTypeTextProps from "../../shared/props/FormTypeTextProps";
 import FormTypeDateProps from "../../shared/props/FormTypeDateProps";
 import FormTypeSelectProps from "../../shared/props/FormTypeSelectProps";
@@ -12,6 +13,7 @@ import BreadcrumbNavigationModel from "../../shared/models/BreadcrumbNavigationM
 import ValidationRequiredRule from "../../../presentation/validations/ValidationRequiredRule";
 import BOMemberUpdateRequestModel from "../models/BOMemberUpdateRequestModel";
 import UserStatuses from "../enumerations/UserStatuses";
+
 
 class MemberUpdateController extends Controller<{}, {}> {
 
@@ -50,12 +52,12 @@ class MemberUpdateController extends Controller<{}, {}> {
         request.name = values[4];
         request.surname = values[5];
         request.locationName = values[6];
-        // request.locationLatitude = values[7];
-        // request.locationLongitude = values[8];
-        // request.profilePictureFileName = values[9];
+        // request.locationLatitude = Number(values[10]);
+        // request.locationLongitude = Number(values[11]);
+        // request.profilePictureFileName = values[12];
         request.phoneNumber = values[7];
         request.userStatus = Number(values[8]);
-        // request.deviceId = values[9];
+        // request.deviceId = values[15];
         request.deviceManifacturer = values[9];
         request.deviceModel = values[10];
         request.mrzFullString = values[11];
@@ -80,6 +82,12 @@ class MemberUpdateController extends Controller<{}, {}> {
             BreadcrumbNavigationModel.initialize("memberUpdate", "Update Member")
         ];
 
+        // let tokenDateString = "";
+        // if (this._updateRequest.tokenDate != null) {
+            // const tokenDate = new Date(this._updateRequest.tokenDate);
+            // tokenDateString = this.formatDate(tokenDate);
+        // }
+
         let registerDateString = "";
         if (this._updateRequest.registerDate != null) {
             const registerDate = new Date(this._updateRequest.registerDate);
@@ -92,11 +100,12 @@ class MemberUpdateController extends Controller<{}, {}> {
             birthDateString = this.formatDate(birthDate);
         }
 
+
         const formElements: FormType[] = [
             FormTypeTextProps.initializeWithValidations("UserName", this._updateRequest.userName, true, [ ValidationRequiredRule.initialize("UserName is required.", "Invalid UserName.") ]),
             // FormTypeTextProps.initializeWithValidations("Password", this._updateRequest.password, true, [ ValidationRequiredRule.initialize("Password is required.", "Invalid Password.") ]),
             // FormTypeTextProps.initialize("UserToken", this._updateRequest.userToken ?? "", true),
-            // FormTypeDateProps.initialize("TokenDate", this._updateRequest.tokenDate ?? "", true),
+            // FormTypeDateProps.initialize("TokenDate", tokenDateString, true),
             FormTypeDateProps.initializeWithValidations("RegisterDate", registerDateString, true, [ ValidationRequiredRule.initialize("RegisterDate is required.", "Invalid RegisterDate.") ]),
             FormTypeDateProps.initialize("BirthDate", birthDateString, true),
             FormTypeTextProps.initializeWithValidations("Email", this._updateRequest.email, true, [ ValidationRequiredRule.initialize("Email is required.", "Invalid Email.") ]),
@@ -107,16 +116,17 @@ class MemberUpdateController extends Controller<{}, {}> {
             // FormTypeTextProps.initialize("LocationLongitude", (this._updateRequest.locationLongitude ?? 0).toString(), true),
             // FormTypeTextProps.initialize("ProfilePictureFileName", this._updateRequest.profilePictureFileName ?? "", true),
             FormTypeTextProps.initialize("PhoneNumber", this._updateRequest.phoneNumber ?? "", true),
-            FormTypeSelectProps.initialize("UserStatus", this._updateRequest.userStatus.toString(), true, [
+            FormTypeSelectProps.initializeWithValidations("UserStatus", this._updateRequest.userStatus.toString(), true, [
                 FormDataOptionModel.initialize(UserStatuses.getUserStatusesName(UserStatuses.Active), UserStatuses.Active.toString()),
                 FormDataOptionModel.initialize(UserStatuses.getUserStatusesName(UserStatuses.Deactivated), UserStatuses.Deactivated.toString()),
                 FormDataOptionModel.initialize(UserStatuses.getUserStatusesName(UserStatuses.TemporaryDisabled), UserStatuses.TemporaryDisabled.toString()),
                 FormDataOptionModel.initialize(UserStatuses.getUserStatusesName(UserStatuses.Banned), UserStatuses.Banned.toString()),
-            ]),
+            ], [ ValidationRequiredRule.initialize("UserStatus is required.", "Invalid UserStatus.") ]),
             // FormTypeTextProps.initializeWithValidations("DeviceId", this._updateRequest.deviceId, true, [ ValidationRequiredRule.initialize("DeviceId is required.", "Invalid DeviceId.") ]),
             FormTypeTextProps.initializeWithValidations("DeviceManifacturer", this._updateRequest.deviceManifacturer, true, [ ValidationRequiredRule.initialize("DeviceManifacturer is required.", "Invalid DeviceManifacturer.") ]),
             FormTypeTextProps.initializeWithValidations("DeviceModel", this._updateRequest.deviceModel, true, [ ValidationRequiredRule.initialize("DeviceModel is required.", "Invalid DeviceModel.") ]),
             FormTypeTextProps.initialize("MRZFullString", this._updateRequest.mrzFullString ?? "", true),
+
         ];
 
         return (
