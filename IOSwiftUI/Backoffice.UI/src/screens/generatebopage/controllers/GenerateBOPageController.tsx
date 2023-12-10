@@ -120,6 +120,10 @@ class GenerateBOPageController extends Controller<GenerateBOPageProps, GenerateB
             "import " + this.state.boPageDataResponse.updateEntityDisplayName + "Controller from \"../../" + this.state.boPageDataResponse.entityDisplayName.toLowerCase() + "/controllers/" + this.state.boPageDataResponse.updateEntityDisplayName + "Controller\";",
             "if (this.state.pageHash === \"" + this.state.boPageDataResponse.updateEntityName + "\") { return <" + this.state.boPageDataResponse.updateEntityDisplayName + "Controller /> }"
         ];
+        const deleteNavigationViewDescriptions = [
+            "import " + this.state.boPageDataResponse.deleteEntityDisplayName + "Controller from \"../../" + this.state.boPageDataResponse.entityDisplayName.toLowerCase() + "/controllers/" + this.state.boPageDataResponse.deleteEntityDisplayName + "Controller\";",
+            "if (this.state.pageHash === \"" + this.state.boPageDataResponse.deleteEntityName + "\") { return <" + this.state.boPageDataResponse.deleteEntityDisplayName + "Controller /> }"
+        ];
         return (
             <React.StrictMode>
                 <div className="content-wrapper">
@@ -160,6 +164,11 @@ class GenerateBOPageController extends Controller<GenerateBOPageProps, GenerateB
                         <CodeBlockView title="Navigation"
                             sectionTitle="Backoffice.UI/src/screens/shared/views/NavigationView.tsx"
                             descriptions={updateNavigationViewDescriptions} />
+
+                        <div className="clearfix"></div>
+                        <CodeBlockView title="Navigation"
+                            sectionTitle="Backoffice.UI/src/screens/shared/views/NavigationView.tsx"
+                            descriptions={deleteNavigationViewDescriptions} />
                     </div>
                 </div>
             </React.StrictMode>
@@ -178,6 +187,9 @@ class GenerateBOPageController extends Controller<GenerateBOPageProps, GenerateB
         request.updateEntityName = this.state.boPageDataResponse?.updateEntityName ?? "";
         request.updateEntityAPIPath = this.state.boPageDataResponse?.updateEntityAPIPath ?? "";
         request.updateEntityDisplayName = this.state.boPageDataResponse?.updateEntityDisplayName ?? "";
+        request.deleteEntityName = this.state.boPageDataResponse?.deleteEntityName ?? "";
+        request.deleteEntityAPIPath = this.state.boPageDataResponse?.deleteEntityAPIPath ?? "";
+        request.deleteEntityDisplayName = this.state.boPageDataResponse?.deleteEntityDisplayName ?? "";
 
         return request;
     }

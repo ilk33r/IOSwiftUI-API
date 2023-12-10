@@ -73,4 +73,20 @@ public class BackOfficeMembersViewModel : BackOfficeViewModel
         DatabaseContext.Update(member);
         DatabaseContext.SaveChanges();
     }
+
+    public void DeleteMember(int id)
+    {
+        // Obtain item entity
+        MemberEntity? member = DatabaseContext.Find<MemberEntity>(id);
+
+        // Check item is not exists
+        if (member == null)
+        {
+            return;
+        }
+
+        // Remove entity
+        DatabaseContext.Remove(member);
+        DatabaseContext.SaveChanges();
+    }
 }

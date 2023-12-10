@@ -34,8 +34,20 @@ public class BackOfficeMembersController : BackOfficeController<BackOfficeMember
     [HttpPost("[action]")]
     public ResponseModel UpdateMember([FromBody] BOMemberUpdateRequestModel requestModel)
     {
-        // Add menu
+        // Update item
         ViewModel.UpdateMember(requestModel);
+
+        // Create and return response
+        return new ResponseModel();
+    }
+
+    [IOValidateRequestModel]
+    [IOUserRole(UserRoles.Admin)]
+    [HttpPost("[action]")]
+    public ResponseModel DeleteMember([FromBody] BOMemberDeleteRequestModel requestModel)
+    {
+        // Delete item
+        ViewModel.DeleteMember(requestModel.ID);
 
         // Create and return response
         return new ResponseModel();
