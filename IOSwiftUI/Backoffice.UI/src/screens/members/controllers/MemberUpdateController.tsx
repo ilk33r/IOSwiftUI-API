@@ -32,11 +32,11 @@ class MemberUpdateController extends Controller<{}, {}> {
         this.handleFormSuccess = this.handleFormSuccess.bind(this);
     }
 
-    handleFormError(errorTitle: string, errorMessage: string) {
+    private handleFormError(errorTitle: string, errorMessage: string) {
         this.calloutPresenter.show(CalloutTypes.danger, errorTitle, errorMessage);
     }
 
-    handleFormSuccess(values: string[]) {
+    private handleFormSuccess(values: string[]) {
         this.indicatorPresenter.present();
 
         const requestPath = `BackOfficeMembers/UpdateMember`;

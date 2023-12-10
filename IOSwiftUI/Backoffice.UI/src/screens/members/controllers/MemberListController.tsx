@@ -8,6 +8,7 @@ import MemberListState from "../props/MemberListState";
 import MemberListProps from "../props/MemberListProps";
 import BOMemberListRequestModel from "../models/BOMemberListRequestModel";
 import BOMemberListResponseModel from "../models/BOMemberListResponseModel";
+import BOMemberDeleteRequestModel from "../models/BOMemberDeleteRequestModel";
 import BOMemberUpdateRequestModel from "../models/BOMemberUpdateRequestModel";
 import UserStatuses from "../enumerations/UserStatuses";
 
@@ -24,6 +25,7 @@ class MemberListController extends Controller<MemberListProps, MemberListState> 
 
         this.pageChangeHandler = this.pageChangeHandler.bind(this);
         this.updateDataHandler = this.updateDataHandler.bind(this);
+        this.deleteDataHandler = this.deleteDataHandler.bind(this);
     }
 
     private loadMembers() {
@@ -58,31 +60,40 @@ class MemberListController extends Controller<MemberListProps, MemberListState> 
     }
 
     private updateDataHandler(index: number) {
-        const currentUser = this.state.memberList[index];
+        const currentMember = this.state.memberList[index];
         const updateRequestModel = new BOMemberUpdateRequestModel();
-        updateRequestModel.id = currentUser.id;
-        updateRequestModel.userName = currentUser.userName;
-        // updateRequestModel.password = currentUser.password;
-        // updateRequestModel.userToken = currentUser.userToken;
-        // updateRequestModel.tokenDate = currentUser.tokenDate;
-        updateRequestModel.registerDate = currentUser.registerDate;
-        updateRequestModel.birthDate = currentUser.birthDate;
-        updateRequestModel.email = currentUser.email;
-        updateRequestModel.name = currentUser.name;
-        updateRequestModel.surname = currentUser.surname;
-        updateRequestModel.locationName = currentUser.locationName;
-        // updateRequestModel.locationLatitude = currentUser.locationLatitude;
-        // updateRequestModel.locationLongitude = currentUser.locationLongitude;
-        // updateRequestModel.profilePictureFileName = currentUser.profilePictureFileName;
-        updateRequestModel.phoneNumber = currentUser.phoneNumber;
-        updateRequestModel.userStatus = currentUser.userStatus;
-        // updateRequestModel.deviceId = currentUser.deviceId;
-        updateRequestModel.deviceManifacturer = currentUser.deviceManifacturer;
-        updateRequestModel.deviceModel = currentUser.deviceModel;
-        updateRequestModel.mrzFullString = currentUser.mrzFullString;
+        updateRequestModel.id = currentMember.id;
+        updateRequestModel.userName = currentMember.userName;
+        // updateRequestModel.password = currentMember.password;
+        // updateRequestModel.userToken = currentMember.userToken;
+        // updateRequestModel.tokenDate = currentMember.tokenDate;
+        updateRequestModel.registerDate = currentMember.registerDate;
+        updateRequestModel.birthDate = currentMember.birthDate;
+        updateRequestModel.email = currentMember.email;
+        updateRequestModel.name = currentMember.name;
+        updateRequestModel.surname = currentMember.surname;
+        updateRequestModel.locationName = currentMember.locationName;
+        // updateRequestModel.locationLatitude = currentMember.locationLatitude;
+        // updateRequestModel.locationLongitude = currentMember.locationLongitude;
+        // updateRequestModel.profilePictureFileName = currentMember.profilePictureFileName;
+        updateRequestModel.phoneNumber = currentMember.phoneNumber;
+        updateRequestModel.userStatus = currentMember.userStatus;
+        // updateRequestModel.deviceId = currentMember.deviceId;
+        updateRequestModel.deviceManifacturer = currentMember.deviceManifacturer;
+        updateRequestModel.deviceModel = currentMember.deviceModel;
+        updateRequestModel.mrzFullString = currentMember.mrzFullString;
 
         this.appContext.setObjectForKey("memberUpdateRequest", updateRequestModel);
         this.navigateToPage("memberUpdate");
+    }
+
+    private deleteDataHandler(index: number) {
+        const currentMember = this.state.memberList[index];
+        const deleteRequestModel = new BOMemberDeleteRequestModel();
+        deleteRequestModel.id = currentMember.id ?? 0;
+        
+        this.appContext.setObjectForKey("memberDeleteRequest", deleteRequestModel);
+        this.navigateToPage("memberDelete");
     }
 
     render() {
@@ -181,7 +192,7 @@ class MemberListController extends Controller<MemberListProps, MemberListState> 
                     resourceOptions="Options"
                     resourceSelect=""
                     extras={null}
-                    deleteDataHandler={null}
+                    deleteDataHandler={this.deleteDataHandler}
                     updateDataHandler={this.updateDataHandler}
                     selectDataHandler={null}
                     pagination={pagination} />
