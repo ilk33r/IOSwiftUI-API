@@ -40,6 +40,10 @@ import MemberListController from "../../members/controllers/MemberListController
 import MemberUpdateController from "../../members/controllers/MemberUpdateController";
 import MemberDeleteController from "../../members/controllers/MemberDeleteController";
 import MemberAddController from "../../members/controllers/MemberAddController";
+import OneTimeCodeListController from "../../onetimecodes/controllers/OneTimeCodeListController";
+import OneTimeCodeUpdateController from "../../onetimecodes/controllers/OneTimeCodeUpdateController";
+import OneTimeCodeDeleteController from "../../onetimecodes/controllers/OneTimeCodeDeleteController";
+import OneTimeCodeAddController from "../../onetimecodes/controllers/OneTimeCodeAddController";
 
 class NavigationView extends View<NavigationProps, NavigationState> {
 
@@ -224,6 +228,11 @@ class NavigationView extends View<NavigationProps, NavigationState> {
             return <MemberAddController /> 
         }
 
+        if (this.state.pageHash === "oneTimeCodeList") { return <OneTimeCodeListController /> }
+        if (this.state.pageHash === "oneTimeCodeUpdate") { return <OneTimeCodeUpdateController /> }
+        if (this.state.pageHash === "oneTimeCodeDelete") { return <OneTimeCodeDeleteController /> }
+        if (this.state.pageHash === "oneTimeCodeAdd") { return <OneTimeCodeAddController /> }
+        
         return (
             <React.StrictMode>
                 <DashboardController />
