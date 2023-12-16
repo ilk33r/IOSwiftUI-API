@@ -33,6 +33,7 @@ class MemberAddController extends Controller<{}, {}> {
 
         const requestPath = `BackOfficeMembers/CreateMember`;
         const request = new BOMemberUpdateRequestModel();
+        request.id = 0;
         request.userName = values[0];
         request.password = values[1];
         request.userToken = values[2];
@@ -66,7 +67,7 @@ class MemberAddController extends Controller<{}, {}> {
     render() {
         const navigation: BreadcrumbNavigationModel[] = [
             BreadcrumbNavigationModel.initialize("memberList", "Members"),
-            BreadcrumbNavigationModel.initialize("memberCreate", "Create Member")
+            BreadcrumbNavigationModel.initialize("memberAdd", "Create Member")
         ];
 
         const formElements: FormType[] = [
@@ -80,11 +81,11 @@ class MemberAddController extends Controller<{}, {}> {
             FormTypeTextProps.initializeWithValidations("Name", "", true, [ ValidationRequiredRule.initialize("Name is required.", "Invalid Name.") ]),
             FormTypeTextProps.initializeWithValidations("Surname", "", true, [ ValidationRequiredRule.initialize("Surname is required.", "Invalid Surname.") ]),
             FormTypeTextProps.initialize("LocationName", "", true),
-            FormTypeTextProps.initialize("LocationLatitude", "".toString(), true),
-            FormTypeTextProps.initialize("LocationLongitude", "".toString(), true),
+            FormTypeTextProps.initialize("LocationLatitude", "", true),
+            FormTypeTextProps.initialize("LocationLongitude", "", true),
             FormTypeTextProps.initialize("ProfilePictureFileName", "", true),
             FormTypeTextProps.initialize("PhoneNumber", "", true),
-            FormTypeSelectProps.initializeWithValidations("UserStatus", "", true, [
+            FormTypeSelectProps.initializeWithValidations("UserStatus", UserStatuses.Active.toString(), true, [
                 FormDataOptionModel.initialize(UserStatuses.getUserStatusesName(UserStatuses.Active), UserStatuses.Active.toString()),
                 FormDataOptionModel.initialize(UserStatuses.getUserStatusesName(UserStatuses.Deactivated), UserStatuses.Deactivated.toString()),
                 FormDataOptionModel.initialize(UserStatuses.getUserStatusesName(UserStatuses.TemporaryDisabled), UserStatuses.TemporaryDisabled.toString()),
@@ -108,16 +109,6 @@ class MemberAddController extends Controller<{}, {}> {
                     formElements={formElements} />
             </React.StrictMode>
         );
-    }
-
-    private formatDate(date: Date): string {
-        const dateMonthValue = date.getMonth() + 1;
-        const dateMonth = (dateMonthValue < 10) ? '0' + dateMonthValue.toString() : dateMonthValue.toString();
-
-        const dateDayValue = date.getDate();
-        const dateDay = (dateDayValue < 10) ? '0' + dateDayValue.toString() : dateDayValue.toString();
-
-        return date.getFullYear() + '-' + dateMonth + '-' + dateDay;        
     }
 }
 
