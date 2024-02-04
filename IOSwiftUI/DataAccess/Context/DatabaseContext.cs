@@ -58,6 +58,9 @@ public class DatabaseContext : IODatabaseContext<DatabaseContext>
     {
         modelBuilder.Entity<ImagesEntity>().HasIndex(
                 entity => new { entity.CreateDate });
+
+        modelBuilder.Entity<ImagesEntity>().HasIndex(
+                entity => new { entity.IsDraft });
     }
 
     private void BuildMemberFollowingEntity(ModelBuilder modelBuilder)
