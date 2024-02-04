@@ -28,6 +28,7 @@ public class MemberImagesViewModel : ImageViewModel
         {
             FileName = fileName,
             CreateDate = DateTime.UtcNow,
+            IsDraft = true,
             Member = member
         };
 
