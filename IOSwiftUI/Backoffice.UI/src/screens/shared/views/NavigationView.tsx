@@ -44,6 +44,9 @@ import OneTimeCodeListController from "../../onetimecodes/controllers/OneTimeCod
 import OneTimeCodeUpdateController from "../../onetimecodes/controllers/OneTimeCodeUpdateController";
 import OneTimeCodeDeleteController from "../../onetimecodes/controllers/OneTimeCodeDeleteController";
 import OneTimeCodeAddController from "../../onetimecodes/controllers/OneTimeCodeAddController";
+import MemberImagesListController from "../../memberimages/controllers/MemberImagesListController";
+import MemberImagesUpdateController from "../../memberimages/controllers/MemberImagesUpdateController";
+import MemberImagesDeleteController from "../../memberimages/controllers/MemberImagesDeleteController";
 
 class NavigationView extends View<NavigationProps, NavigationState> {
 
@@ -232,6 +235,9 @@ class NavigationView extends View<NavigationProps, NavigationState> {
         if (this.state.pageHash === "oneTimeCodeUpdate") { return <OneTimeCodeUpdateController /> }
         if (this.state.pageHash === "oneTimeCodeDelete") { return <OneTimeCodeDeleteController /> }
         if (this.state.pageHash === "oneTimeCodeAdd") { return <OneTimeCodeAddController /> }
+        if (this.state.pageHash === "memberImagesList") { return <MemberImagesListController /> }
+        if (this.state.pageHash === "memberImagesUpdate") { return <MemberImagesUpdateController /> }
+        if (this.state.pageHash === "mamberImagesDelete") { return <MemberImagesDeleteController /> }
         
         return (
             <React.StrictMode>

@@ -9,6 +9,10 @@ namespace IOSwiftUI.WebApi.Statics.ViewModels;
 
 public class ImageAssetViewModel : ImageViewModel
 {
+    public override void CheckAuthorizationHeader()
+    {
+    }
+
     public FileStream GetImageFile(string publicId)
     {
         string fileName = GetFileName(publicId);

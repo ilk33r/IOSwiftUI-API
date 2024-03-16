@@ -1,4 +1,4 @@
-﻿namespace IOSwiftUI.Common;
+﻿namespace IOSwiftUI.Common.Enumerations;
 
 public enum Currencies
 {
